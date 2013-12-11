@@ -1,10 +1,11 @@
+#!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          restart-portal
 # Required-Start:
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Plone
+# Short-Description: Plone service start/stop script
 # Description:       Start pound, memcache, zeo and 8 zope clients at boot time
 ### END INIT INFO
 
