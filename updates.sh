@@ -31,7 +31,7 @@ done
 LATEST=$( echo $buffer | sed 's/"sha":"\([a-f0-9]\+\)".*/\1/' )
 if [ -z "$LATEST" ]; then
     echo "Fatal: Can not read last revision of eea.plonebuildout.core"
-    return 1
+    exit 1
 fi
 
 echo $LATEST > $FILENAME
