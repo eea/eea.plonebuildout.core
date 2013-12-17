@@ -48,9 +48,6 @@ start_all() {
     fi
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
-        if [ -z $$PID_ZOPE ]; then
-            PID_ZOPE="0"
-        fi
         if pid_exists $$PID_ZOPE; then
             log_failure_msg "Zope $$name not started"
         else
@@ -87,9 +84,6 @@ stop_all() {
     fi
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
-        if [ -z $$PID_ZOPE ]; then
-            PID_ZOPE="0"
-        fi
         if pid_exists $$PID_ZOPE; then
             $$SUCMD "$$PREFIX/bin/$$name stop"
             log_success_msg "Zope $$name stopped"
@@ -114,9 +108,6 @@ status_all() {
     fi
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
-        if [ -z $$PID_ZOPE ]; then
-            PID_ZOPE="0"
-        fi
         if pid_exists $$PID_ZOPE; then
             log_success_msg "Zope $$name"
             $$PREFIX/bin/$$name status
