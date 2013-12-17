@@ -15,15 +15,15 @@ RETVAL=0
 SUCMD='su -s /bin/bash ${parts.configuration['effective-user']} -c'
 PREFIX=${parts.buildout.directory}
 INSTANCES=({% for i in range(1,9) %}{% with INSTANCE='www'+str(i) %}{% if parts[INSTANCE]['recipe'] %}"$INSTANCE" {% end %}{% end %}{% end %})
-PID_ZEO=$( cat "$$PREFIX/var/zeoserver.pid" )
+PID_ZEO=$( cat "$$PREFIX/var/zeoserver.pid" 2>/dev/null )
 if [ -z $$PID_ZEO ]; then
     PID_ZEO="0"
 fi
-PID_POUND=$( cat "$$PREFIX/parts/poundconfig/var/pound.pid" )
+PID_POUND=$( cat "$$PREFIX/parts/poundconfig/var/pound.pid" 2>/dev/null )
 if [ -z $$PID_POUND ]; then
     PID_POUND="0"
 fi
-PID_MEMCACHED=$( cat "$$PREFIX/var/memcached.pid.${parts.configuration['memcache-port']}" )
+PID_MEMCACHED=$( cat "$$PREFIX/var/memcached.pid.${parts.configuration['memcache-port']}" 2>/dev/null )
 if [ -z $$PID_MEMCACHED ]; then
     PID_MEMCACHED="0"
 fi
@@ -47,7 +47,7 @@ start_all() {
         log_success_msg "Zeosever started"
     fi
     for name in "$${INSTANCES[@]}"; do
-        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" )
+        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
@@ -86,7 +86,7 @@ stop_all() {
         log_failure_msg "Pound not stopped"
     fi
     for name in "$${INSTANCES[@]}"; do
-        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" )
+        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
@@ -113,7 +113,7 @@ status_all() {
         log_failure_msg "Zeoserver"
     fi
     for name in "$${INSTANCES[@]}"; do
-        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" )
+        PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
