@@ -35,4 +35,4 @@ if [ -z "$LATEST" ]; then
 fi
 
 echo $LATEST > $FILENAME
-return 0
+
