@@ -35,8 +35,12 @@ for name in "$${INSTANCES[@]}"; do
     test -f $$PREFIX/bin/$$name || exit 5
 done
 
+pid_exists() {
+    ps -p $1  &>/dev/null
+}
+
 start_all() {
-    if kill -0 $$PID_ZEO; then
+    if pid_exists $$PID_ZEO; then
         log_failure_msg "Zeoserver not started"
     else
         $$SUCMD "$$PREFIX/bin/zeoserver start"
@@ -47,20 +51,20 @@ start_all() {
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
-        if kill -0 $$PID_ZOPE; then
+        if pid_exists $$PID_ZOPE; then
             log_failure_msg "Zope $$name not started"
         else
             $$SUCMD "$$PREFIX/bin/$$name start"
             log_success_msg "Zope $$name started"
         fi
     done
-    if kill -0 $$PID_POUND; then
+    if pid_exists $$PID_POUND; then
         log_failure_msg "Pound not started"
     else
         $$SUCMD "$$PREFIX/bin/poundctl start"
         log_success_msg "Pound started"
     fi
-    if kill -0 $$PID_MEMCACHED; then
+    if pid_exists $$PID_MEMCACHED; then
         log_failure_msg "Memcached not started"
     else
         $$SUCMD "$$PREFIX/bin/memcached start"
@@ -69,13 +73,13 @@ start_all() {
 }
 
 stop_all() {
-    if kill -0 $$PID_MEMCACHED; then
+    if pid_exists $$PID_MEMCACHED; then
         $$SUCMD "$$PREFIX/bin/memcached stop"
         log_success_msg "Memcached stopped"
     else
         log_failure_msg "Memcached not stopped"
     fi
-    if kill -0 $$PID_POUND; then
+    if pid_exists $$PID_POUND; then
         $$SUCMD "$$PREFIX/bin/poundctl stop"
         log_success_msg "Pound stopped"
     else
@@ -86,14 +90,14 @@ stop_all() {
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
-        if kill -0 $$PID_ZOPE; then
+        if pid_exists $$PID_ZOPE; then
             $$SUCMD "$$PREFIX/bin/$$name stop"
             log_success_msg "Zope $$name stopped"
         else
             log_failure_msg "Zope $$name not stopped"
         fi
     done
-    if kill -0 $$PID_ZEO; then
+    if pid_exists $$PID_ZEO; then
         $$SUCMD "$$PREFIX/bin/zeoserver stop"
         log_success_msg "Zeosever stopped"
     else
@@ -102,7 +106,7 @@ stop_all() {
 }
 
 status_all() {
-    if kill -0 $$PID_ZEO; then
+    if pid_exists $$PID_ZEO; then
         $$PREFIX/bin/zeoserver status
         log_success_msg "Zeosever"
     else
@@ -113,20 +117,20 @@ status_all() {
         if [ -z $$PID_ZOPE ]; then
             PID_ZOPE="0"
         fi
-        if kill -0 $$PID_ZOPE; then
+        if pid_exists $$PID_ZOPE; then
             log_success_msg "Zope $$name"
             $$PREFIX/bin/$$name status
         else
             log_failure_msg "Zope $$name"
         fi
     done
-    if kill -0 $$PID_POUND; then
+    if pid_exists $$PID_POUND; then
         $$SUCMD "$$PREFIX/bin/poundctl status"
         log_success_msg "Pound"
     else
         log_failure_msg "Pound"
     fi
-    if kill -0 $$PID_POUND; then
+    if pid_exists $$PID_POUND; then
         $$SUCMD "$$PREFIX/bin/memcached status"
         log_success_msg "Memcached"
     else
