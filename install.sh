@@ -56,7 +56,7 @@ fi
 echo "Installing virtualenv"
 # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
 curl -o "setuptools-0.9.8.tar.gz" -k "https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz#md5=243076241781935f7fcad370195a4291"
-curl -o "/tmp/virtualenv.py" -k "https://raw.githubusercontent.com/eea/virtualenv/1.10.x/virtualenv.py"
+curl -o "/tmp/virtualenv.py" -k "https://raw.githubusercontent.com/eea/virtualenv/1.10.X/virtualenv.py"
 
 echo "Running: $PYTHON /tmp/virtualenv.py --clear ."
 $PYTHON "/tmp/virtualenv.py" --clear .
