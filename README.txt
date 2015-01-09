@@ -80,6 +80,7 @@ lynx               lynx                 buildout
 tar                tar                  buildout
 gcc                gcc                  buildout
 git > 1.8.3        git > 1.8.3          buildout
+graphviz           graphviz             buildout
 libc6-dev          glibc-devel          buildout
 libxml2-dev        libxml2-devel        buildout
 libxslt-dev        libxslt-devel        buildout
@@ -89,6 +90,7 @@ wv                 wv                   http://wvware.sourceforge.net
 poppler-utils      poppler-utils        pdftotext
 libjpeg-dev        libjpeg-turbo-devel  Pillow
 libsasl2-dev       cyrus-sasl-devel     OpenLDAP
+pdftk              pdftk                buildout
 readline-dev       readline-devel       buildout
 build-essential    make                 buildout
 libz-dev           which                buildout
@@ -367,17 +369,50 @@ mandatory EEA packages installed and an instance of LDAPUserFolder mapped on "*E
 
 The list of EEA Plone packages installed:
 
+* edw.userhistory
+* eea.alchemy
+* eea.annotator
 * eea.cache
+* eea.daviz
 * eea.depiction
 * eea.facetednavigation
 * eea.faceted.vocabularies
 * eea.faceted.inheritance
 * eea.geotags
+* eea.icons
+* eea.pdf
+* eea.plonebuildout.profile
+* eea.progressbar
 * eea.rdfmarshaller
 * eea.relations
 * eea.socialmedia
 * eea.tags
+* eea.tinymce
 * eea.translations
+* eea.uberlisting
+
+Google Maps API Key
+-------------------
+
+Within ZMI -> Plone Site -> portal_properties add a plone property sheet called
+geographical_properties and inside it add a new string property
+called google_key.
+
+In this property you have to paste the Google maps API KEY, follow instruction
+https://developers.google.com/maps/documentation/javascript/tutorial#api_key
+
+The Google account you use to generate the key has to be owner of the site,
+this is done by verification via Google webmaster tools.
+
+Alchemy setup
+-------------
+
+1. Get your alchemy key here: http://www.alchemyapi.com/api/register.html
+2. Update your alchemy API key within Site Setup > Alchemy Settings
+3. Within Plone Control panel go to Alchemy Discoverer.
+
+More informations can be found here: https://github.com/eea/eea.alchemy/
+
 
 New EEA KGS available
 =====================
