@@ -80,7 +80,9 @@ lynx               lynx                 buildout
 tar                tar                  buildout
 gcc                gcc                  buildout
 git > 1.8.3        git > 1.8.3          buildout
-graphviz           graphviz             buildout
+graphviz           --                   eea.relations
+graphviz-gd        --                   eea.relations
+graphviz-dev       graphviz-devel       eea.relations
 libc6-dev          glibc-devel          buildout
 libxml2-dev        libxml2-devel        buildout
 libxslt-dev        libxslt-devel        buildout
@@ -90,7 +92,7 @@ wv                 wv                   http://wvware.sourceforge.net
 poppler-utils      poppler-utils        pdftotext
 libjpeg-dev        libjpeg-turbo-devel  Pillow
 libsasl2-dev       cyrus-sasl-devel     OpenLDAP
-pdftk              pdftk                buildout
+pdftk              pdftk                eea.pdf
 readline-dev       readline-devel       buildout
 build-essential    make                 buildout
 libz-dev           which                buildout
@@ -110,7 +112,17 @@ How to use EEA-CPB
 This section will describe the necessarily steps to create a new EEA Plone based buildout. It will document
 the usage of both development and production buildouts and how to setup and configure the environments.
 
+Please note that by default, when setting up the EEA Plone based buildout, an async operations instance will be be provided.
+Called 'www-async', this instance is responsible for the heavy lifting operations that go on in the background, like pdf generation and
+so on. These are generally time consuming and this is why a separate instance is designed to take over those operations so
+that the main instances (www1, www2,...etc) can provide a seamless user experience. In case you are not using packages that require
+these sorts of operations (like *eea.pdf*, *eea.daviz*), you can safely disable the www-async instance by adding the following lines to your buildout::
+
+ [www-async]
+ recipe =
+
 Note that all the commands stated bellow should not be executed root, your local user should be used instead.
+
 
 Step 1: create an EEA Plone based buildout
 ------------------------------------------
@@ -149,12 +161,7 @@ $ ./bin/zeoserver start
 $ ./bin/www1 start
 $ ./bin/www-async start
 
-The www-async instance is responsible for the heavy lifting operations that go on in the background, like pdf generation and
-so on. These are generally time consuming and this is why a separate instance is designed to take over those operations so
-that the main instance (www1) can provide a seamless user experience. You can also start the application without ZEO
-support. This also implies that there will be no asynchronous instance available and resource consuming operations will
-be done by the main instance which could potentially lead to a slower response from the application. To start the application
-without ZEO support::
+...and without ZEO support::
 
 $ ./bin/instance start
 
@@ -367,29 +374,29 @@ To create a new Plone site follow the next steps:
 The result of all this steps will be a running Plone site under http://localhost:8001/Plone, with all
 mandatory EEA packages installed and an instance of LDAPUserFolder mapped on "*Eionet User Directory*".
 
-The list of EEA Plone packages installed:
+The list of EEA Plone packages available as add-ons and ready to be activated:
 
-* edw.userhistory
-* eea.alchemy
-* eea.annotator
-* eea.cache
-* eea.daviz
-* eea.depiction
-* eea.facetednavigation
-* eea.faceted.vocabularies
-* eea.faceted.inheritance
-* eea.geotags
-* eea.icons
-* eea.pdf
-* eea.plonebuildout.profile
-* eea.progressbar
+* `edw.userhistory <https://github.com/eaudeweb/edw.userhistory>`_
+* `eea.alchemy <http://eea.github.io/docs/eea.alchemy/index.html>`_
+* `eea.annotator <http://eea.github.io/docs/eea.annotator/index.html>`_
+* `eea.cache <http://eea.github.io/docs/eea.cache/index.html>`_
+* `eea.daviz <http://eea.github.io/docs/eea.daviz/index.html>`_
+* `eea.depiction <http://eea.github.io/docs/eea.depiction/index.html>`_
+* `eea.facetednavigation <http://eea.github.io/docs/eea.facetednavigation/index.html>`_
+* `eea.faceted.vocabularies <http://eea.github.io/docs/eea.faceted.vocabularies/index.html>`_
+* `eea.faceted.inheritance <http://eea.github.io/docs/eea.faceted.inheritance/index.html>`_
+* `eea.geotags <http://eea.github.io/docs/eea.geotags/index.html>`_
+* `eea.icons <http://eea.github.io/docs/eea.icons/index.html>`_
+* `eea.pdf <http://eea.github.io/docs/eea.pdf/index.html>`_
+* `eea.plonebuildout.profile <https://github.com/eea/eea.plonebuildout.profile>`_
+* `eea.progressbar <http://eea.github.io/docs/eea.progressbar/index.html>`_
 * eea.rdfmarshaller
-* eea.relations
+* `eea.relations <http://eea.github.io/docs/eea.relations/index.html>`_
 * eea.socialmedia
-* eea.tags
-* eea.tinymce
+* `eea.tags <http://eea.github.io/docs/eea.tags/index.html>`_
+* `eea.tinymce <http://eea.github.io/docs/eea.tinymce/index.html>`_
 * eea.translations
-* eea.uberlisting
+* `eea.uberlisting <http://eea.github.io/docs/eea.uberlisting/index.html>`_
 
 Google Maps API Key
 -------------------
