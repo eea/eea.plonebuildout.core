@@ -6,7 +6,7 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Plone service start/stop script
-# Description:       Start pound, memcache, zeo and 8 zope clients at boot time
+# Description:       Start pound, memcache, zeo and 9 zope clients at boot time
 ### END INIT INFO
 
 . /lib/lsb/init-functions
@@ -15,6 +15,7 @@ RETVAL=0
 SUCMD='su -s /bin/bash ${parts.configuration['effective-user']} -c'
 PREFIX=${parts.buildout.directory}
 INSTANCES=({% for i in range(1,9) %}{% with INSTANCE='www'+str(i) %}{% if parts[INSTANCE]['recipe'] %}"$INSTANCE" {% end %}{% end %}{% end %})
+INSTANCES+=('www-async')
 
 PID_ZEO=$( cat "$$PREFIX/var/zeoserver.pid" 2>/dev/null )
 PID_POUND=$( cat "$$PREFIX/parts/poundconfig/var/pound.pid" 2>/dev/null )

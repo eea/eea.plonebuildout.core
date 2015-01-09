@@ -145,13 +145,19 @@ To start the application with ZEO support::
 
 $ ./bin/zeoserver start
 $ ./bin/www1 start
+$ ./bin/www-async start
 
-... and without ZEO support::
+The www-async instance is responsible for the heavy lifting operations that go on in the background, like pdf generation and
+so on. These are generally time consuming and this is why a separate instance is designed to take over those operations so
+that the main instance (www1) can provide a seamless user experience. You can also start the application without ZEO
+support. This also implies that there will be no asynchronous instance available and resource consuming operations will
+be done by the main instance which could potentially lead to a slower response from the application. To start the application
+without ZEO support::
 
 $ ./bin/instance start
 
 Now we will have a running Plone buildout. The development buildout by default install ZEO
-and two ZEO clients (*./bin/www1* and *./bin/www2*) plus one Zope instance that can be
+and three ZEO clients (*./bin/www1*, *./bin/www2* and *./bin/www-async*) plus one Zope instance that can be
 used without ZEO support (*./bin/instance*).
 
 Step 3: EEA-CPB for production
@@ -163,13 +169,13 @@ The *[configuration]* part contains a comprehensive list of configurable options
 
 Some preliminary preparations must be done by system administrators on the deployment server:
 
-* a user and user group called 'zope' should be created having neccesary rights
-* a project folder must be created under /var/local/MY-EEA-PORTAL with group owner zope and 2775 (rwxrwxr-x) mode
+* a user and user group called 'zope-www' should be created having neccesary rights. The 'zope-www' is the default user, you can change this in the configuration section, just make sure the changes are consistent across the deployment.
+* a project folder must be created under /var/local/MY-EEA-PORTAL with group owner zope-www and 2775 (rwxrwxr-x) mode
 * add under /etc/profile:
 
 ::
 
- if [ "`id -gn`" = "zope" ]; then
+ if [ "`id -gn`" = "zope-www" ]; then
      umask 002
  fi
 
@@ -189,7 +195,7 @@ The above installation process will install and configure, in addition to Zope a
 * *Pound* for load balancing ZEO clients
 * *Memcache*
 * Daemon for sending *emails*
-* *ZEO clients* - 8 instances
+* *ZEO clients* - 9 instances
 * *ZEO server*
 
 Processes on production should be started with sudo, e.g::
@@ -199,6 +205,7 @@ $ sudo ./bin/zeoserver start
 $ sudo ./bin/www1 start
 $ ...
 $ sudo ./bin/www8 start
+$ sudo ./bin/www-async start
 $ sudo ./bin/poundctl start
 
 For the application stack to be restarted when server reboot, the system administrator should
@@ -219,7 +226,7 @@ User permissions
 On production server, system administrators should setup:
 
 * umask 002 for all users
-* all users members of 'zope' group
+* all users members of 'zope-www' group
 
 Database packing
 ~~~~~~~~~~~~~~~~
