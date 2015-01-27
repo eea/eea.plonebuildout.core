@@ -2,6 +2,7 @@
 
 from distutils import version as vt
 import os, sys
+import re
 import subprocess
 import urllib
 
@@ -76,6 +77,16 @@ def main():
     except subprocess.CalledProcessError:
         print "error. \nGot an error while changing buildout files"
         sys.exit(1)
+
+    # Update versions.cfg with the newly generated KGS version
+    main_vfile_path = os.path.join(cwd, 'buildout-configs/versions.cfg')
+    mvf = open(main_vfile_path)
+    mvf_contents = mvf.read()
+    mvf_contents = re.sub(r"(?<=kgs\/).*?(?=\/)", next_ver, mvf_contents)
+    mvf.close()
+
+    with open(main_vfile_path, 'wb') as mvf:
+        mvf.write(mvf_contents)
 
     print "done"
     sys.exit(0)

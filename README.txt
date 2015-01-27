@@ -80,6 +80,9 @@ lynx               lynx                 buildout
 tar                tar                  buildout
 gcc                gcc                  buildout
 git > 1.8.3        git > 1.8.3          buildout
+graphviz           --                   eea.relations
+graphviz-gd        --                   eea.relations
+graphviz-dev       graphviz-devel       eea.relations
 libc6-dev          glibc-devel          buildout
 libxml2-dev        libxml2-devel        buildout
 libxslt-dev        libxslt-devel        buildout
@@ -89,6 +92,7 @@ wv                 wv                   http://wvware.sourceforge.net
 poppler-utils      poppler-utils        pdftotext
 libjpeg-dev        libjpeg-turbo-devel  Pillow
 libsasl2-dev       cyrus-sasl-devel     OpenLDAP
+pdftk              pdftk                eea.pdf
 readline-dev       readline-devel       buildout
 build-essential    make                 buildout
 libz-dev           which                buildout
@@ -108,7 +112,17 @@ How to use EEA-CPB
 This section will describe the necessarily steps to create a new EEA Plone based buildout. It will document
 the usage of both development and production buildouts and how to setup and configure the environments.
 
+Please note that by default, when setting up the EEA Plone based buildout, an async operations instance will be be provided.
+Called 'www-async', this instance is responsible for the heavy lifting operations that go on in the background, like pdf generation and
+so on. These are generally time consuming and this is why a separate instance is designed to take over those operations so
+that the main instances (www1, www2,...etc) can provide a seamless user experience. In case you are not using packages that require
+these sorts of operations (like *eea.pdf*, *eea.daviz*), you can safely disable the www-async instance by adding the following lines to your buildout::
+
+ [www-async]
+ recipe =
+
 Note that all the commands stated bellow should not be executed root, your local user should be used instead.
+
 
 Step 1: create an EEA Plone based buildout
 ------------------------------------------
@@ -145,13 +159,14 @@ To start the application with ZEO support::
 
 $ ./bin/zeoserver start
 $ ./bin/www1 start
+$ ./bin/www-async start
 
-... and without ZEO support::
+...and without ZEO support::
 
 $ ./bin/instance start
 
 Now we will have a running Plone buildout. The development buildout by default install ZEO
-and two ZEO clients (*./bin/www1* and *./bin/www2*) plus one Zope instance that can be
+and three ZEO clients (*./bin/www1*, *./bin/www2* and *./bin/www-async*) plus one Zope instance that can be
 used without ZEO support (*./bin/instance*).
 
 Step 3: EEA-CPB for production
@@ -163,13 +178,13 @@ The *[configuration]* part contains a comprehensive list of configurable options
 
 Some preliminary preparations must be done by system administrators on the deployment server:
 
-* a user and user group called 'zope' should be created having neccesary rights
-* a project folder must be created under /var/local/MY-EEA-PORTAL with group owner zope and 2775 (rwxrwxr-x) mode
+* a user and user group called 'zope-www' should be created having neccesary rights. The 'zope-www' is the default user, you can change this in the configuration section, just make sure the changes are consistent across the deployment.
+* a project folder must be created under /var/local/MY-EEA-PORTAL with group owner zope-www and 2775 (rwxrwxr-x) mode
 * add under /etc/profile:
 
 ::
 
- if [ "`id -gn`" = "zope" ]; then
+ if [ "`id -gn`" = "zope-www" ]; then
      umask 002
  fi
 
@@ -189,7 +204,7 @@ The above installation process will install and configure, in addition to Zope a
 * *Pound* for load balancing ZEO clients
 * *Memcache*
 * Daemon for sending *emails*
-* *ZEO clients* - 8 instances
+* *ZEO clients* - 9 instances
 * *ZEO server*
 
 Processes on production should be started with sudo, e.g::
@@ -199,6 +214,7 @@ $ sudo ./bin/zeoserver start
 $ sudo ./bin/www1 start
 $ ...
 $ sudo ./bin/www8 start
+$ sudo ./bin/www-async start
 $ sudo ./bin/poundctl start
 
 For the application stack to be restarted when server reboot, the system administrator should
@@ -219,7 +235,7 @@ User permissions
 On production server, system administrators should setup:
 
 * umask 002 for all users
-* all users members of 'zope' group
+* all users members of 'zope-www' group
 
 Database packing
 ~~~~~~~~~~~~~~~~
@@ -363,19 +379,52 @@ To create a new Plone site follow the next steps:
 The result of all this steps will be a running Plone site under http://localhost:8001/Plone, with all
 mandatory EEA packages installed and an instance of LDAPUserFolder mapped on "*Eionet User Directory*".
 
-The list of EEA Plone packages installed:
+The list of EEA Plone packages available as add-ons and ready to be activated:
 
-* eea.cache
-* eea.depiction
-* eea.facetednavigation
-* eea.faceted.vocabularies
-* eea.faceted.inheritance
-* eea.geotags
+* `edw.userhistory <https://github.com/eaudeweb/edw.userhistory>`_
+* `eea.alchemy <http://eea.github.io/docs/eea.alchemy/index.html>`_
+* `eea.annotator <http://eea.github.io/docs/eea.annotator/index.html>`_
+* `eea.cache <http://eea.github.io/docs/eea.cache/index.html>`_
+* `eea.daviz <http://eea.github.io/docs/eea.daviz/index.html>`_
+* `eea.depiction <http://eea.github.io/docs/eea.depiction/index.html>`_
+* `eea.facetednavigation <http://eea.github.io/docs/eea.facetednavigation/index.html>`_
+* `eea.faceted.vocabularies <http://eea.github.io/docs/eea.faceted.vocabularies/index.html>`_
+* `eea.faceted.inheritance <http://eea.github.io/docs/eea.faceted.inheritance/index.html>`_
+* `eea.geotags <http://eea.github.io/docs/eea.geotags/index.html>`_
+* `eea.icons <http://eea.github.io/docs/eea.icons/index.html>`_
+* `eea.pdf <http://eea.github.io/docs/eea.pdf/index.html>`_
+* `eea.plonebuildout.profile <https://github.com/eea/eea.plonebuildout.profile>`_
+* `eea.progressbar <http://eea.github.io/docs/eea.progressbar/index.html>`_
 * eea.rdfmarshaller
-* eea.relations
+* `eea.relations <http://eea.github.io/docs/eea.relations/index.html>`_
 * eea.socialmedia
-* eea.tags
+* `eea.tags <http://eea.github.io/docs/eea.tags/index.html>`_
+* `eea.tinymce <http://eea.github.io/docs/eea.tinymce/index.html>`_
 * eea.translations
+* `eea.uberlisting <http://eea.github.io/docs/eea.uberlisting/index.html>`_
+
+Google Maps API Key
+-------------------
+
+Within ZMI -> Plone Site -> portal_properties add a plone property sheet called
+geographical_properties and inside it add a new string property
+called google_key.
+
+In this property you have to paste the Google maps API KEY, follow instruction
+https://developers.google.com/maps/documentation/javascript/tutorial#api_key
+
+The Google account you use to generate the key has to be owner of the site,
+this is done by verification via Google webmaster tools.
+
+Alchemy setup
+-------------
+
+1. Get your alchemy key here: http://www.alchemyapi.com/api/register.html
+2. Update your alchemy API key within Site Setup > Alchemy Settings
+3. Within Plone Control panel go to Alchemy Discoverer.
+
+More informations can be found here: https://github.com/eea/eea.alchemy/
+
 
 New EEA KGS available
 =====================
