@@ -432,4 +432,4 @@ More details under `License.txt`_.
 .. _`EEA Graylog2`: http://logs.eea.europa.eu
 .. _`How to use EEA Continuous Integration Testing server`: http://taskman.eionet.europa.eu/projects/zope/wiki/HowToJenkins
 .. _`EEA Common Plone Buildout - build on Jenkins`: http://ci.eionet.europa.eu/view/Plone%20EEA%20Buildouts/job/eea.plonebuildout.CPB
-.. _`EEA Common Plone Buildout - Jenkins CFG`: https://github.com/eea/eea.plonebuildout.example/blob/master/jenkins.cfg
+.. _`EEA Common Plone Buildout Example - Jenkins CFG`: https://github.com/eea/eea.plonebuildout.example/blob/master/jenkins.cfg
