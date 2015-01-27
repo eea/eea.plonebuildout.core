@@ -313,6 +313,11 @@ Complete list of EEA Munin nodes is accessible here: http://unicorn.eea.europa.e
 
 Continuous Integration
 ~~~~~~~~~~~~~~~~~~~~~~
+Under the `eea.plonebuildout.example`_ package we created an example based on which a Jenkins build can be easily created. See:
+
+- `EEA Common Plone Buildout - build on Jenkins`_
+- `EEA Common Plone Buildout Example - Jenkins CFG`_
+
 Read more under: `How to use EEA Continuous Integration Testing server`_
 
 Deployment guidelines
@@ -426,3 +431,5 @@ More details under `License.txt`_.
 .. _`How to add EEA packages on GitHub`: http://taskman.eionet.europa.eu/projects/zope/wiki/HowToAddPackagesOnGithub
 .. _`EEA Graylog2`: http://logs.eea.europa.eu
 .. _`How to use EEA Continuous Integration Testing server`: http://taskman.eionet.europa.eu/projects/zope/wiki/HowToJenkins
+.. _`EEA Common Plone Buildout - build on Jenkins`: http://ci.eionet.europa.eu/view/Plone%20EEA%20Buildouts/job/eea.plonebuildout.CPB
+.. _`EEA Common Plone Buildout - Jenkins CFG`: https://github.com/eea/eea.plonebuildout.example/blob/master/jenkins.cfg
