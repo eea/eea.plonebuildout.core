@@ -70,39 +70,39 @@ All installs will require the basic GNU build and archive tools: gcc, g++, gmake
 
 On Debian/Ubuntu systems, this requirement will be taken care of by installing build-essential. On RPM systems (RedHat, Fedora, CentOS), you'll need the gcc-c++ (installs most everything needed as a dependency) and patch RPMs.
 
-=================       ===================       =============================
-Debian/Ubuntu           CentOS                    dependency for
-=================       ===================       =============================
-python 2.6              python 2.6                buildout
-python-dev              python-devel              buildout
-wget                    wget                      buildout
-lynx                    lynx                      buildout
-tar                     tar                       buildout
-gcc                     gcc                       buildout
-git > 1.8.3             git > 1.8.3               buildout
-graphviz                --                        eea.relations
-graphviz-gd             --                        eea.relations
-graphviz-dev            graphviz-devel            eea.relations
-ImageMagick > 6.3.7+    ImageMagick > 6.3.7+      eea.relations
-libc6-dev               glibc-devel               buildout
-libxml2-dev             libxml2-devel             buildout
-libxslt-dev             libxslt-devel             buildout
-libsvn-dev              subversion-devel          buildout
-libaprutil1-dev         apr-util-devel            buildout
-wv                      wv                        http://wvware.sourceforge.net
-poppler-utils           poppler-utils             pdftotext
-libjpeg-dev             libjpeg-turbo-devel       Pillow
-libldap2-dev            openldap-devel            OpenLDAP
-libsasl2-dev            cyrus-sasl-devel          OpenLDAP
-pdftk                   pdftk                     eea.pdf
-readline-dev            readline-devel            buildout
-build-essential         make                      buildout
-libz-dev                which                     buildout
-libssl-dev              openssl-devel             buildout
---                      patch                     buildout
---                      gcc-c++                   buildout
-libcurl3-dev            curl-devel                sparql-client and pycurl2
-=================       ===================       =============================
+====================  ====================   =============================
+Debian/Ubuntu         CentOS                 dependency for
+====================  ====================   =============================
+python 2.6            python 2.6             buildout
+python-dev            python-devel           buildout
+wget                  wget                   buildout
+lynx                  lynx                   buildout
+tar                   tar                    buildout
+gcc                   gcc                    buildout
+git > 1.8.3           git > 1.8.3            buildout
+graphviz              --                     eea.relations
+graphviz-gd           --                     eea.relations
+graphviz-dev          graphviz-devel         eea.relations
+ImageMagick > 6.3.7+  ImageMagick > 6.3.7+   eea.relations
+libc6-dev             glibc-devel            buildout
+libxml2-dev           libxml2-devel          buildout
+libxslt-dev           libxslt-devel          buildout
+libsvn-dev            subversion-devel       buildout
+libaprutil1-dev       apr-util-devel         buildout
+wv                    wv                     http://wvware.sourceforge.net
+poppler-utils         poppler-utils          pdftotext
+libjpeg-dev           libjpeg-turbo-devel    Pillow
+libldap2-dev          openldap-devel         OpenLDAP
+libsasl2-dev          cyrus-sasl-devel       OpenLDAP
+pdftk                 pdftk                  eea.pdf
+readline-dev          readline-devel         buildout
+build-essential       make                   buildout
+libz-dev              which                  buildout
+libssl-dev            openssl-devel          buildout
+--                    patch                  buildout
+--                    gcc-c++                buildout
+libcurl3-dev          curl-devel             sparql-client and pycurl2
+====================  ====================   =============================
 
 Additional info to install git for CentOS::
 
