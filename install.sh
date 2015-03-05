@@ -11,9 +11,9 @@ if [ "$0" = "./install.sh" ]; then
 fi
 
 CONFIG=$1
-SETUPTOOLS=`curl -s https://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
-ZCBUILDOUT=`curl -s https://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
-BOOSTRAP='https://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/bootstrap.py'
+SETUPTOOLS=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
+ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
+BOOSTRAP='https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/bootstrap.py'
 
 if [ -z "$CONFIG" ]; then
   if [ -s "devel.cfg" ]; then
