@@ -3,9 +3,9 @@ set -e
 #set -x
 
 CONFIG=$1
-SETUPTOOLS=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
-ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
-BOOSTRAP='https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/bootstrap.py'
+SETUPTOOLS=`curl -s https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
+ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
+BOOSTRAP='https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/bootstrap.py'
 
 if [ -z "$CONFIG" ]; then
   if [ -s "development.cfg" ]; then
