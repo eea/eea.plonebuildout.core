@@ -2,14 +2,6 @@
 set -e
 #set -x
 
-if [ "$0" = "./install.sh" ]; then
-  echo ""
-  echo "============================================================="
-  echo "!!!       WARNING: Use ./deploy.sh on production !!!         "
-  echo "============================================================="
-  echo ""
-fi
-
 CONFIG=$1
 SETUPTOOLS=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
 ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
