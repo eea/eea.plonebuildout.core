@@ -73,7 +73,7 @@ On Debian/Ubuntu systems, this requirement will be taken care of by installing b
 ====================  ====================   =============================
 Debian/Ubuntu         CentOS                 dependency for
 ====================  ====================   =============================
-python 2.6            python 2.6             buildout
+python 2.7            python 2.7             buildout
 python-dev            python-devel           buildout
 wget                  wget                   buildout
 lynx                  lynx                   buildout
