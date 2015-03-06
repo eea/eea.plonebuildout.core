@@ -16,8 +16,8 @@ ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/olimpiurob/eea.plonebuildo
 BOOSTRAP='https://raw.githubusercontent.com/olimpiurob/eea.plonebuildout.core/master/bootstrap.py'
 
 if [ -z "$CONFIG" ]; then
-  if [ -s "devel.cfg" ]; then
-    CONFIG="devel.cfg"
+  if [ -s "development.cfg" ]; then
+    CONFIG="development.cfg"
   else
     CONFIG="buildout.cfg"
   fi
@@ -60,9 +60,6 @@ echo `$PYTHON --version`
 
 echo "Adding eggs directory"
 mkdir -p eggs
-
-echo "Adding secret.cfg file"
-touch secret.cfg
 
 if [ -s "bin/activate" ]; then
 
