@@ -16,7 +16,29 @@ NAME="zope-sendmail"
 SENDMAIL=$SOFTWARE_HOME/bin/$NAME
 QUEUE=${configuration:mail-queue}
 
-prog="$SENDMAIL --daemon $QUEUE --hostname ${configuration:smtp-server}"
+if [ -z "$PYTHON" ]; then
+  PYTHON="/usr/bin/env python2.7"
+fi
+
+# Make sure python is 2.7 or later
+PYTHON_OK=`$PYTHON -c 'import sys
+print (sys.version_info >= (2, 7) and "1" or "0")'`
+
+SCL_PKG='python27'
+
+if [ ! "$PYTHON_OK" = '1' ];then
+    TEST_SCL_PY=`/usr/bin/scl --list | grep -q $SCL_PKG`
+    if [ ! -f /usr/bin/scl ] || [ ! TEST_SCL_PY ];then
+        echo "Python 2.7 or later is required"
+        exit 0
+    else
+        OPTS="/usr/bin/scl enable $SCL_PKG --"
+    fi
+else
+    OPTS=''
+fi
+
+prog="$OPTS $SENDMAIL --daemon $QUEUE --hostname ${configuration:smtp-server}"
 lockfile=/var/lock/subsys/$NAME
 
 start() {
