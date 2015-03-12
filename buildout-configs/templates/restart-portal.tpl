@@ -12,6 +12,27 @@
 . /lib/lsb/init-functions
 
 RETVAL=0
+if [ -z "$$PYTHON" ]; then
+  PYTHON="/usr/bin/env python2.7"
+fi
+
+# Make sure python is 2.7 or later
+PYTHON_OK=`$$PYTHON -c 'import sys
+print (sys.version_info >= (2, 7) and "1" or "0")'`
+
+SCL_PKG='python27'
+
+if [ ! "$$PYTHON_OK" = '1' ];then
+    TEST_SCL_PY=`/usr/bin/scl --list | grep -q $$SCL_PKG`
+    if [ ! -f /usr/bin/scl ] || [ ! TEST_SCL_PY ];then
+        echo "Python 2.7 or later is required"
+        exit 0
+    else
+        OPTS="/usr/bin/scl enable $$SCL_PKG --"
+    fi
+else
+    OPTS=''
+fi
 SUCMD='su -s /bin/bash ${parts.configuration['effective-user']} -c'
 PREFIX=${parts.buildout.directory}
 INSTANCES=({% for i in range(1,9) %}{% with INSTANCE='www'+str(i) %}{% if parts[INSTANCE]['recipe'] %}"$INSTANCE" {% end %}{% end %}{% end %})
@@ -37,7 +58,7 @@ start_all() {
     if pid_exists $$PID_ZEO; then
         log_failure_msg "Zeoserver not started"
     else
-        $$SUCMD "$$PREFIX/bin/zeoserver start"
+        $$SUCMD "$$OPTS $$PREFIX/bin/zeoserver start"
         log_success_msg "Zeosever started"
     fi
     for name in "$${INSTANCES[@]}"; do
@@ -45,33 +66,33 @@ start_all() {
         if pid_exists $$PID_ZOPE; then
             log_failure_msg "Zope $$name not started"
         else
-            $$SUCMD "$$PREFIX/bin/$$name start"
+            $$SUCMD "$$OPTS $$PREFIX/bin/$$name start"
             log_success_msg "Zope $$name started"
         fi
     done
     if pid_exists $$PID_POUND; then
         log_failure_msg "Pound not started"
     else
-        $$SUCMD "$$PREFIX/bin/poundctl start"
+        $$SUCMD "$$OPTS $$PREFIX/bin/poundctl start"
         log_success_msg "Pound started"
     fi
     if pid_exists $$PID_MEMCACHED; then
         log_failure_msg "Memcached not started"
     else
-        $$SUCMD "$$PREFIX/bin/memcached start"
+        $$SUCMD "$$OPTS $$PREFIX/bin/memcached start"
         log_success_msg "Memcached started"
     fi
 }
 
 stop_all() {
     if pid_exists $$PID_MEMCACHED; then
-        $$SUCMD "$$PREFIX/bin/memcached stop"
+        $$SUCMD "$$OPTS $$PREFIX/bin/memcached stop"
         log_success_msg "Memcached stopped"
     else
         log_failure_msg "Memcached not stopped"
     fi
     if pid_exists $$PID_POUND; then
-        $$SUCMD "$$PREFIX/bin/poundctl stop"
+        $$SUCMD "$$OPTS $$PREFIX/bin/poundctl stop"
         log_success_msg "Pound stopped"
     else
         log_failure_msg "Pound not stopped"
@@ -79,14 +100,14 @@ stop_all() {
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if pid_exists $$PID_ZOPE; then
-            $$SUCMD "$$PREFIX/bin/$$name stop"
+            $$SUCMD "$$OPTS $$PREFIX/bin/$$name stop"
             log_success_msg "Zope $$name stopped"
         else
             log_failure_msg "Zope $$name not stopped"
         fi
     done
     if pid_exists $$PID_ZEO; then
-        $$SUCMD "$$PREFIX/bin/zeoserver stop"
+        $$SUCMD "$$OPTS $$PREFIX/bin/zeoserver stop"
         log_success_msg "Zeosever stopped"
     else
         log_failure_msg "Zeoserver not stopped"
@@ -95,7 +116,7 @@ stop_all() {
 
 status_all() {
     if pid_exists $$PID_ZEO; then
-        $$PREFIX/bin/zeoserver status
+        $$OPTS $$PREFIX/bin/zeoserver status
         log_success_msg "Zeosever"
     else
         log_failure_msg "Zeoserver"
@@ -104,19 +125,19 @@ status_all() {
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if pid_exists $$PID_ZOPE; then
             log_success_msg "Zope $$name"
-            $$PREFIX/bin/$$name status
+            $$OPTS $$PREFIX/bin/$$name status
         else
             log_failure_msg "Zope $$name"
         fi
     done
     if pid_exists $$PID_POUND; then
-        $$SUCMD "$$PREFIX/bin/poundctl status"
+        $$SUCMD "$$OPTS $$PREFIX/bin/poundctl status"
         log_success_msg "Pound"
     else
         log_failure_msg "Pound"
     fi
     if pid_exists $$PID_POUND; then
-        $$SUCMD "$$PREFIX/bin/memcached status"
+        $$SUCMD "$$OPTS $$PREFIX/bin/memcached status"
         log_success_msg "Memcached"
     else
         log_failure_msg "Memcached"
