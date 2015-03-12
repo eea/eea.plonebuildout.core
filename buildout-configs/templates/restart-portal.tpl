@@ -18,7 +18,7 @@ fi
 
 # Make sure python is 2.7 or later
 PYTHON_OK=`$$PYTHON -c 'import sys
-print (sys.version_info >= (2, 7) and "1" or "0")'`
+print (sys.version_info >= (2, 7) and "1" or "0")' 2> /dev/null`
 
 SCL_PKG='python27'
 
