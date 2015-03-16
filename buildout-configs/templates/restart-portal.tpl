@@ -36,7 +36,7 @@ fi
 SUCMD='su -s /bin/bash ${parts.configuration['effective-user']} -c'
 PREFIX=${parts.buildout.directory}
 INSTANCES=({% for i in range(1,9) %}{% with INSTANCE='www'+str(i) %}{% if parts[INSTANCE]['recipe'] %}"$INSTANCE" {% end %}{% end %}{% end %})
-INSTANCES+=('www-async')
+INSTANCES+=({% if parts['www-async']['recipe'] %}"www-async" {% end %})
 
 PID_ZEO=$( cat "$$PREFIX/var/zeoserver.pid" 2>/dev/null )
 PID_POUND=$( cat "$$PREFIX/parts/poundconfig/var/pound.pid" 2>/dev/null )
