@@ -24,7 +24,7 @@ SCL_PKG='python27'
 
 if [ ! "$$PYTHON_OK" = '1' ];then
     TEST_SCL_PY=`/usr/bin/scl --list | grep -q $$SCL_PKG`
-    if [ ! -f /usr/bin/scl ] || [ ! TEST_SCL_PY ];then
+    if [ ! -f /usr/bin/scl ] || [ -z "$$TEST_SCL_PY" ];then
         echo "Python 2.7 or later is required"
         exit 0
     else
