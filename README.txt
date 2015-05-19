@@ -497,7 +497,7 @@ Once the modification has been made:
 
 How to upgrade LDAP (to plone.app.ldap)
 =======================================
-Starting with **EEA KGS version 4.1** we recommend using **plone.app.ldap** to manage LDAP and Active Directory servers.
+Starting with **EEA KGS version 4.5** we recommend using **plone.app.ldap** to manage LDAP and Active Directory servers.
 Thus, the following steps will guide you on how to update your deployment:
 
 1. Within **development.cfg** and **deployment.cfg** replace::
