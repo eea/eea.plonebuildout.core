@@ -1,6 +1,7 @@
 *.swp
 *.pyc
 *~
+.idea
 .installed.cfg
 .mr.developer.cfg
 bin

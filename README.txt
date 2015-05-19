@@ -68,7 +68,9 @@ the packages, since some of them are not included in the base repo.
 
 All installs will require the basic GNU build and archive tools: gcc, g++, gmake, gnu tar, gunzip, bunzip2 and patch.
 
-On Debian/Ubuntu systems, this requirement will be taken care of by installing build-essential. On RPM systems (RedHat, Fedora, CentOS), you'll need the gcc-c++ (installs most everything needed as a dependency) and patch RPMs.
+On Debian/Ubuntu systems, this requirement will be taken care of by
+installing build-essential. On RPM systems (RedHat, Fedora, CentOS), you'll
+need the gcc-c++ (installs most everything needed as a dependency) and patch RPMs.
 
 ====================  ====================   =============================
 Debian/Ubuntu         CentOS                 dependency for
@@ -159,7 +161,7 @@ one of the administrators should be contact. To do so, login under `'EEA Taskman
 Once the new GitHub repository was created the sources of the new buildout can be pushed there (e.g. https://github.com/eea/eea.plonebuildout.MY-EEA-PORTAL).
 
 Step 2: EEA-CPB for development
--------------------------------------------------
+-------------------------------
 First step on using the EEA-CPB is to setup the specific configuration needed. The list of all configurable
 settings (e.g. the number of Zope instances, port numbers, database location on file system etc.) can be found
 under *../eea.plonebuildout.MY-EEA-PORTAL/development.cfg*. The *[configuration]* part contains a comprehensive
@@ -188,7 +190,7 @@ and three ZEO clients (*./bin/www1*, *./bin/www2* and *./bin/www-async*) plus on
 used without ZEO support (*./bin/instance*).
 
 Step 3: EEA-CPB for production
-------------------------------------------------
+------------------------------
 Similar, as explained in the previous chapter, the first step on using the EEA-CPB is to setup
 the specific configuration needed. The list of all configurable settings (e.g. the number of Zope instances,
 port numbers, database location on file system etc.) can be found under *../eea.plonebuildout.MY-EEA-PORTAL/deployment.cfg*.
@@ -245,7 +247,7 @@ $ sudo scl enable python27 -- ./bin/www8 start
 $ sudo scl enable python27 -- ./bin/www-async start
 $ sudo scl enable python27 -- ./bin/poundctl start
 
-In order to avoid this, it is recommended that you use the restart-portal init script generated in 
+In order to avoid this, it is recommended that you use the restart-portal init script generated in
 /etc/init.d the script from eea.plonebuildout.MY-EEA-PORTAL/etc/rc.d/restart-portal. The script will automatically
 use the Software Collection python 2.7 if there is no system python 2.7 without any other user intervention.
 
@@ -258,7 +260,8 @@ $ chkconfig --add restart-portal
 $ chkconfig restart-portal on
 $ service restart-portal start
 
-Apache configuration file should be symlinked from /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf under /etc/httpd/conf.d, this operation should be done by system administrators, e.g.::
+Apache configuration file should be symlinked from /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf
+under /etc/httpd/conf.d, this operation should be done by system administrators, e.g.::
 
 $ ln -s /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf /etc/httpd/conf.d/MY-EEA-PORTAL-apache-vh.conf
 
@@ -271,7 +274,8 @@ On production server, system administrators should setup:
 
 Database packing
 ~~~~~~~~~~~~~~~~
-Packing is a vital regular maintenance procedure The Plone database does not automatically prune deleted content. You must periodically pack the database to reclaim space.
+Packing is a vital regular maintenance procedure The Plone database does not
+automatically prune deleted content. You must periodically pack the database to reclaim space.
 
 Data.fs should be packed daily via a cron job::
 
@@ -279,7 +283,8 @@ Data.fs should be packed daily via a cron job::
 
 Backup policy
 ~~~~~~~~~~~~~
-The backup policy should be established with sistem administrators. Locations to be backuped, backup frequency and backup retention should be decided.
+The backup policy should be established with sistem administrators. Locations to
+be backuped, backup frequency and backup retention should be decided.
 
 Logs
 ~~~~
@@ -293,7 +298,11 @@ the default location on disk will be:
 
 * /eea.plonebuildout.MY-EEA-PORTAL/var/log/zeoserver.log
 
-Zope client logs are of much more interest and grow more rapidly. There are two kinds of client logs, and each of your clients will maintain both, access logs and event logs. By default the logs will be rotated once they rich 100Mb in size and 3 old log files will be kept. Zope clients will write the logs on disk under /eea.plonebuildout.MY-EEA-PORTAL/var/log/, e.g.:
+Zope client logs are of much more interest and grow more rapidly.
+There are two kinds of client logs, and each of your clients will maintain both,
+access logs and event logs. By default the logs will be rotated once they rich 100Mb
+in size and 3 old log files will be kept. Zope clients will write the
+logs on disk under /eea.plonebuildout.MY-EEA-PORTAL/var/log/, e.g.:
 
 * /eea.plonebuildout.MY-EEA-PORTAL/var/log/www1-Z2.log
 * /eea.plonebuildout.MY-EEA-PORTAL/var/log/www1.log
@@ -370,7 +379,11 @@ Read more under: `How to use EEA Continuous Integration Testing server`_
 
 Deployment guidelines
 ~~~~~~~~~~~~~~~~~~~~~
-To deploy a new buildout on EEA servers and to keep things organised, we provide the `guidelines to follow`_ by the developers, as well as the system administrators. Ideally, the following information should be compiled in a README file, residing in the root directory of the project (e.g. /eea.plonebuildout.MY-EEA-PORTAL/README.txt). Additional resources, such as Taskman projects/wikis may be added to this documentation.
+To deploy a new buildout on EEA servers and to keep things organised, we provide
+the `guidelines to follow`_ by the developers, as well as the system administrators.
+Ideally, the following information should be compiled in a README file, residing in
+the root directory of the project (e.g. /eea.plonebuildout.MY-EEA-PORTAL/README.txt).
+Additional resources, such as Taskman projects/wikis may be added to this documentation.
 
 The guideline document provide detailed informations about:
 
@@ -463,7 +476,9 @@ New EEA KGS available
 Whenever a new EEA KGS (EEA Known Good Set) is released, a portal message will appear for the managers,
 indicating the new EEA KGS version available for upgrade.
 
-To upgrade to the new EEA KGS, change in your versions.cfg file (inside the root of the buildout under /eea.plonebuildout.MY-EEA-PORTAL/versions.cfg), to point to the new KGS versions.cfg file.
+To upgrade to the new EEA KGS, change in your versions.cfg file
+(inside the root of the buildout under /eea.plonebuildout.MY-EEA-PORTAL/versions.cfg),
+to point to the new KGS versions.cfg file.
 
 For example, to upgrade to EEA KGS version 1.1, /eea.plonebuildout.MY-EEA-PORTAL/versions.cfg must contain::
 
@@ -471,26 +486,37 @@ For example, to upgrade to EEA KGS version 1.1, /eea.plonebuildout.MY-EEA-PORTAL
     extends =
         https://raw.github.com/eea/eea.plonebuildout.core/master/buildout-configs/kgs/1.1/versions.cfg
 
-Once the modification has been made, re-run buildout, restart Zope instances and then follow
-normal Plone upgrade procedures: first run upgrade migration of Plone (if case), then upgrade the
-EEA and thirdparty packages.
+Once the modification has been made:
+
+1. re-run buildout
+2. restart Zope instances and then follow normal Plone upgrade procedures
+
+   * first run upgrade migration of Plone (if case)
+   * then upgrade the EEA and third-party packages: within **Site Setup > Add-ons** run available upgrades.
+
 
 Source code
 ===========
-Source code can be found under EEA organisation on GitHub and consist in one package for the core buildout, one Plone profile package and one buildout example.
+Source code can be found under EEA organisation on GitHub and consist in one package
+for the core buildout, one Plone profile package and one buildout example.
 
 - `eea.plonebuildout.core`_
 - `eea.plonebuildout.profile`_
 - `eea.plonebuildout.example`_
 
-To add a new package within EEA organization GitHub space, follow the instructions from this wiki: `How to add EEA packages on GitHub`_.
+To add a new package within EEA organization GitHub space,
+follow the instructions from this wiki: `How to add EEA packages on GitHub`_.
 
 
 Copyright and license
 =====================
-The Initial Owner of the Original Code is European Environment Agency (EEA). All Rights Reserved.
+The Initial Owner of the Original Code is European Environment Agency (EEA).
+All Rights Reserved.
 
-The EEA-CPB (the Original Code) is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+The EEA-CPB (the Original Code) is free software; you can redistribute
+it and/or modify it under the terms of the GNU General Public License as published
+by the Free Software Foundation; either version 2 of the License,
+or (at your option) any later version.
 
 More details under `License.txt`_.
 
