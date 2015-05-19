@@ -495,6 +495,29 @@ Once the modification has been made:
    * then upgrade the EEA and third-party packages: within **Site Setup > Add-ons** run available upgrades.
 
 
+How to upgrade LDAP (to plone.app.ldap)
+=======================================
+Starting with **EEA KGS version 4.1** we recommend using **plone.app.ldap** to manage LDAP and Active Directory servers.
+Thus, the following steps will guide you on how to update your deployment:
+
+1. Within **development.cfg** and **deployment.cfg** replace::
+
+    eggs +=
+      Products.LDAPMultiPlugins
+      Products.LDAPUserFolder
+
+  with::
+
+    eggs +=
+      plone.app.ldap
+
+2. Re-run buildout
+3. Restart Zope
+4. Login using a non-LDAP user (Zope admin/Plone local user with Manager rights)
+5. Within **Site Setup > Add-ons** run available upgrades.
+6. Within **Site Setup > LDAP Connection** check that everything is OK.
+
+
 Source code
 ===========
 Source code can be found under EEA organisation on GitHub and consist in one package
