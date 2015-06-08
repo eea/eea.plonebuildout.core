@@ -364,9 +364,8 @@ In order to have access on `EEA Graylog2`_, an administrator should be asked to 
 
 Monitoring
 ~~~~~~~~~~
-The EEA uses Nagios to monitor it's servers. The http service is beeing monitored by system administrators
-using the check_http nagios plugin. These `wiki instructions`_ can be used as guidance for enabling http
-monitoring using check_http plugin, but it is recommended that this operation be done by your system administrator.
+The http services is beeing monitored by system administrators and is
+recommended that this operation be done by your system administrator.
 
 Continuous Integration
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -550,7 +549,6 @@ More details under `License.txt`_.
 
 .. _`'EEA Taskman'`: http://taskman.eionet.europa.eu
 .. _`'Common infrastructure' project`: http://taskman.eionet.europa.eu/projects/infrastructure
-.. _`wiki instructions`: http://nagios.sourceforge.net/docs/nagioscore/4/en/monitoring-publicservices.html
 .. _`guidelines to follow`: http://taskman.eionet.europa.eu/projects/infrastructure/wiki/Deployment-guide
 .. _`land.copernicus.plonebuildout`: https://github.com/eea/land.copernicus.plonebuildout/blob/master/README.rst
 .. _`eea.plonebuildout.core`: https://github.com/eea/eea.plonebuildout.core
