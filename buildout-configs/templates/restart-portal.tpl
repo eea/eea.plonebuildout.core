@@ -42,10 +42,18 @@ PID_ZEO=$( cat "$$PREFIX/var/zeoserver.pid" 2>/dev/null )
 PID_POUND=$( cat "$$PREFIX/parts/poundconfig/var/pound.pid" 2>/dev/null )
 PID_MEMCACHED=$( cat "$$PREFIX/var/memcached.pid.${parts.configuration['memcache-port']}" 2>/dev/null )
 
-
+{% if parts.zeoserver.recipe %}
 test -f $$PREFIX/bin/zeoserver || exit 5
+{% end %}
+
+{% if parts['memcached-ctl'].recipe %}
 test -f $$PREFIX/bin/memcached || exit 5
+{% end %}
+
+{% if parts.poundbuild.recipe %}
 test -f $$PREFIX/bin/poundctl || exit 5
+{% end %}
+
 for name in "$${INSTANCES[@]}"; do
     test -f $$PREFIX/bin/$$name || exit 5
 done
