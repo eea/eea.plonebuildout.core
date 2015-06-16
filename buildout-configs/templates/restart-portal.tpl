@@ -63,12 +63,17 @@ pid_exists() {
 }
 
 start_all() {
+    {% if parts.zeoserver.recipe %}
+
     if pid_exists $$PID_ZEO; then
         log_failure_msg "Zeoserver not started"
     else
         $$SUCMD "$$OPTS $$PREFIX/bin/zeoserver start"
         log_success_msg "Zeosever started"
     fi
+
+    {% end % }
+
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if pid_exists $$PID_ZOPE; then
@@ -78,33 +83,52 @@ start_all() {
             log_success_msg "Zope $$name started"
         fi
     done
+
+    {% if parts.poundbuild.recipe %}
+
     if pid_exists $$PID_POUND; then
         log_failure_msg "Pound not started"
     else
         $$SUCMD "$$OPTS $$PREFIX/bin/poundctl start"
         log_success_msg "Pound started"
     fi
+
+    {% end %}
+
+    {% if parts['memcached-ctl'].recipe %}
+
     if pid_exists $$PID_MEMCACHED; then
         log_failure_msg "Memcached not started"
     else
         $$SUCMD "$$OPTS $$PREFIX/bin/memcached start"
         log_success_msg "Memcached started"
     fi
+
+    {% end %}
 }
 
 stop_all() {
+
+    {% if parts['memcached-ctl'].recipe %}
+
     if pid_exists $$PID_MEMCACHED; then
         $$SUCMD "$$OPTS $$PREFIX/bin/memcached stop"
         log_success_msg "Memcached stopped"
     else
         log_failure_msg "Memcached not stopped"
     fi
+
+    {% end %}
+
+    {% if parts.poundbuild.recipe %}
     if pid_exists $$PID_POUND; then
         $$SUCMD "$$OPTS $$PREFIX/bin/poundctl stop"
         log_success_msg "Pound stopped"
     else
         log_failure_msg "Pound not stopped"
     fi
+    {% end %}
+
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if pid_exists $$PID_ZOPE; then
@@ -114,21 +138,29 @@ stop_all() {
             log_failure_msg "Zope $$name not stopped"
         fi
     done
+
+    {% if parts.zeoserver.recipe %}
+
     if pid_exists $$PID_ZEO; then
         $$SUCMD "$$OPTS $$PREFIX/bin/zeoserver stop"
         log_success_msg "Zeosever stopped"
     else
         log_failure_msg "Zeoserver not stopped"
     fi
+
+    {% end %}
 }
 
 status_all() {
+    {% if parts.zeoserver.recipe %}
     if pid_exists $$PID_ZEO; then
         $$OPTS $$PREFIX/bin/zeoserver status
         log_success_msg "Zeosever"
     else
         log_failure_msg "Zeoserver"
     fi
+    {% end %}
+
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
         if pid_exists $$PID_ZOPE; then
@@ -138,18 +170,28 @@ status_all() {
             log_failure_msg "Zope $$name"
         fi
     done
+
+    {% if parts.poundbuild.recipe %}
+
     if pid_exists $$PID_POUND; then
         $$SUCMD "$$OPTS $$PREFIX/bin/poundctl status"
         log_success_msg "Pound"
     else
         log_failure_msg "Pound"
     fi
+
+    {% end %}
+
+    {% if parts['memcached-ctl'].recipe %}
+
     if pid_exists $$PID_POUND; then
         $$SUCMD "$$OPTS $$PREFIX/bin/memcached status"
         log_success_msg "Memcached"
     else
         log_failure_msg "Memcached"
     fi
+
+    {% end %}
 }
 
 case "$$1" in
