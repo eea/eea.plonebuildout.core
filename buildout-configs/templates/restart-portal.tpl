@@ -184,7 +184,7 @@ status_all() {
 
     {% if parts['memcached-ctl'].recipe %}
 
-    if pid_exists $$PID_POUND; then
+    if pid_exists $$PID_MEMCACHED; then
         $$SUCMD "$$OPTS $$PREFIX/bin/memcached status"
         log_success_msg "Memcached"
     else
