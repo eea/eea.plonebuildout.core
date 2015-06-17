@@ -72,7 +72,7 @@ start_all() {
         log_success_msg "Zeosever started"
     fi
 
-    {% end % }
+    {% end %}
 
     for name in "$${INSTANCES[@]}"; do
         PID_ZOPE=$( cat "$$PREFIX/var/$$name.pid" 2>/dev/null )
