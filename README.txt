@@ -96,7 +96,6 @@ poppler-utils         poppler-utils          pdftotext
 libjpeg-dev           libjpeg-turbo-devel    Pillow
 libldap2-dev          openldap-devel         OpenLDAP
 libsasl2-dev          cyrus-sasl-devel       OpenLDAP
-pdftk                 pdftk                  eea.pdf
 readline-dev          readline-devel         buildout
 build-essential       make                   buildout
 libz-dev              which                  buildout
