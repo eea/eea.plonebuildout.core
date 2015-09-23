@@ -4,9 +4,13 @@
 .idea
 .installed.cfg
 .mr.developer.cfg
+updates.sh.tmp
 bin
 eggs
 include
 lib
 parts
 var
+develop-eggs
+local
+src
