@@ -38,22 +38,23 @@ There are two configurations available for running EEA-CPB:
 EEA-CPB ships with various default configurations for
 the development and production installations:
 
-================  =============  =============
-configuration     production     development
-================  =============  =============
-Apache            configured     not available
-Pound             configured     not available
-Zope instances    configured     configured
-ZEO               configured     configured
-Zope storage      configured     configured
-Zope logs         configured     configured
-Memcache          configured     configured
-Email             configured     disabled
-EIONET LDAP       configured     not available
-Debugging         not available  configured
-EEA Profile [#]_  configured     configured
-EEA KGS     [#]_  configured     configured
-================  =============  =============
+=====================================  =============  =============
+configuration                          production     development
+=====================================  =============  =============
+Apache                                 configured     not available
+Pound                                  configured     not available
+Zope instances                         configured     configured
+ZEO                                    configured     configured
+RelStorage+PostgreSQL                  disbaled       disabled
+Zope storage                           configured     configured
+Zope logs                              configured     configured
+Memcache                               configured     configured
+Email                                  configured     disabled
+EIONET LDAP                            configured     not available
+Debugging                              not available  configured
+EEA Profile [#]_                       configured     configured
+EEA KGS     [#]_                       configured     configured
+=====================================  =============  =============
 
 System requirements and preparation for EEA-CPB
 ===============================================
@@ -72,39 +73,42 @@ On Debian/Ubuntu systems, this requirement will be taken care of by
 installing build-essential. On RPM systems (RedHat, Fedora, CentOS), you'll
 need the gcc-c++ (installs most everything needed as a dependency) and patch RPMs.
 
-====================  ====================   =============================
-Debian/Ubuntu         CentOS                 dependency for
-====================  ====================   =============================
-python 2.7            python 2.7             buildout
-python-dev            python-devel           buildout
-wget                  wget                   buildout
-lynx                  lynx                   buildout
-tar                   tar                    buildout
-gcc                   gcc                    buildout
-git > 1.8.3           git > 1.8.3            buildout
-graphviz              --                     eea.relations
-graphviz-gd           --                     eea.relations
-graphviz-dev          graphviz-devel         eea.relations
-ImageMagick > 6.3.7+  ImageMagick > 6.3.7+   eea.relations
-libc6-dev             glibc-devel            buildout
-libxml2-dev           libxml2-devel          buildout
-libxslt-dev           libxslt-devel          buildout
-libsvn-dev            subversion-devel       buildout
-libaprutil1-dev       apr-util-devel         buildout
-wv                    wv                     http://wvware.sourceforge.net
-poppler-utils         poppler-utils          pdftotext
-libjpeg-dev           libjpeg-turbo-devel    Pillow
-libldap2-dev          openldap-devel         OpenLDAP
-libsasl2-dev          cyrus-sasl-devel       OpenLDAP
-readline-dev          readline-devel         buildout
-build-essential       make                   buildout
-libz-dev              which                  buildout
-libssl-dev            openssl-devel          buildout
---                    patch                  buildout
---                    gcc-c++                buildout
-libcurl3-dev          curl-devel             sparql-client and pycurl2
---                    redhat-lsb-core        init script
-====================  ====================   =============================
+==========================  ===========================  =========================================
+Debian/Ubuntu               CentOS                       dependency for
+==========================  ===========================  =========================================
+python 2.7                  python 2.7                   buildout
+python-dev                  python-devel                 buildout
+wget                        wget                         buildout
+lynx                        lynx                         buildout
+tar                         tar                          buildout
+gcc                         gcc                          buildout
+git > 1.8.3                 git > 1.8.3                  buildout
+graphviz                    --                           eea.relations
+graphviz-gd                 --                           eea.relations
+graphviz-dev                graphviz-devel               eea.relations
+ImageMagick > 6.3.7+        ImageMagick > 6.3.7+         eea.relations
+libc6-dev                   glibc-devel                  buildout
+libxml2-dev                 libxml2-devel                buildout
+libxslt-dev                 libxslt-devel                buildout
+libsvn-dev                  subversion-devel             buildout
+libaprutil1-dev             apr-util-devel               buildout
+wv                          wv                           http://wvware.sourceforge.net
+poppler-utils               poppler-utils                pdftotext
+libjpeg-dev                 libjpeg-turbo-devel          Pillow
+libldap2-dev                openldap-devel               OpenLDAP
+libsasl2-dev                cyrus-sasl-devel             OpenLDAP
+readline-dev                readline-devel               buildout
+build-essential             make                         buildout
+libz-dev                    which                        buildout
+libssl-dev                  openssl-devel                buildout
+--                          patch                        buildout
+--                          gcc-c++                      buildout
+libcurl3-dev                curl-devel                   sparql-client and pycurl2
+--                          redhat-lsb-core              init script
+libmemcached                libmemcached                 memcached
+libmemcached-dev>=0.40      libmemcached-devel>=0.40     memcached
+zlib1g-dev                  zlib-devel                   memcached
+==========================  ===========================  =========================================
 
 Additional info to install git for CentOS::
 
@@ -123,8 +127,8 @@ so on. These are generally time consuming and this is why a separate instance is
 that the main instances (www1, www2,...etc) can provide a seamless user experience. In case you are not using packages that require
 these sorts of operations (like *eea.pdf*, *eea.daviz*), you can safely disable the www-async instance by adding the following lines to your buildout::
 
- [www-async]
- recipe =
+  [www-async]
+  recipe =
 
 Note that all the commands stated bellow should not be executed root, your local user should be used instead.
 
@@ -150,8 +154,8 @@ should be created, structured and configured, see `eea.plonebuildout.example`_.
 
 Steps to create a new EEA Plone based buildout::
 
-$ git clone https://github.com/eea/eea.plonebuildout.example.git eea.plonebuildout.MY-EEA-PORTAL
-$ rm -rf ./eea.plonebuildout.MY-EEA-PORTAL/.git
+  $ git clone https://github.com/eea/eea.plonebuildout.example.git eea.plonebuildout.MY-EEA-PORTAL
+  $ rm -rf ./eea.plonebuildout.MY-EEA-PORTAL/.git
 
 Last step should be to add the new buildout sources under GitHub. To create a new repository under EEA GitHub organisation,
 one of the administrators should be contact. To do so, login under `'EEA Taskman'`_ and add a issue with your request under
@@ -169,53 +173,61 @@ the settings just uncomment them.
 
 Once the buildout settings were set you have to run a few commands using your local user (this is done on your local machine)::
 
-$ git clone git@github.com:eea/eea.plonebuildout.MY-EEA-PORTAL.git
-$ cd eea.plonebuildout.MY-EEA-PORTAL
-$ ./install.sh
-$ ./bin/buildout -c development.cfg
+  $ git clone git@github.com:eea/eea.plonebuildout.MY-EEA-PORTAL.git
+  $ cd eea.plonebuildout.MY-EEA-PORTAL
+  $ ./install.sh
+  $ ./bin/buildout -c development.cfg
 
-To start the application with ZEO support::
+To start the application with ZEO/PostgreSQL support::
 
-$ ./bin/zeoserver start
-$ ./bin/www1 start
-$ ./bin/www-async start
+  $ ./bin/zeoserver start
+  $ ./bin/www1 start
+  $ ./bin/www-async start
 
-...and without ZEO support::
+...and without ZEO/PostgreSQL support::
 
-$ ./bin/instance start
+  $ ./bin/instance start
 
 Now we will have a running Plone buildout. The development buildout by default install ZEO
 and three ZEO clients (*./bin/www1*, *./bin/www2* and *./bin/www-async*) plus one Zope instance that can be
 used without ZEO support (*./bin/instance*).
+
+.. note ::
+
+  See **RelStorage + PostgreSQL** section bellow if you want to use PostgreSQL instead of ZEO.
+
 
 Step 3: EEA-CPB for production
 ------------------------------
 Similar, as explained in the previous chapter, the first step on using the EEA-CPB is to setup
 the specific configuration needed. The list of all configurable settings (e.g. the number of Zope instances,
 port numbers, database location on file system etc.) can be found under *../eea.plonebuildout.MY-EEA-PORTAL/deployment.cfg*.
-The *[configuration]* part contains a comprehensive list of configurable options. The values listed here are the buildout defaults. In order to override any of the settings just uncomment them.
+The *[configuration]* part contains a comprehensive list of configurable options.
+The values listed here are the buildout defaults. In order to override any of the settings just uncomment them.
 
 Some preliminary preparations must be done by system administrators on the deployment server:
 
-* a user and user group called 'zope-www' should be created having neccesary rights. The 'zope-www' is the default user, you can change this in the configuration section, just make sure the changes are consistent across the deployment.
+* a user and user group called 'zope-www' should be created having neccesary rights.
+  The 'zope-www' is the default user, you can change this in the configuration section,
+  just make sure the changes are consistent across the deployment.
 * a project folder must be created under /var/local/MY-EEA-PORTAL with group owner zope-www and 2775 (rwxrwxr-x) mode
 * add under /etc/profile:
 
 ::
 
- if [ "`id -gn`" = "zope-www" ]; then
-     umask 002
- fi
+  if [ "`id -gn`" = "zope-www" ]; then
+    umask 002
+   fi
 
 
 The first time you want to use the  EEA-CPB you have to run a few commands::
 
-$ cd /var/local/MY-EEA-PORTAL
-$ git clone https://github.com/eea/eea.plonebuildout.MY-EEA-PORTAL.git
-$ cd eea.plonebuildout.MY-EEA-PORTAL
-$ ./install.sh
-$ ./bin/buildout -c deployment.cfg
-$ chmod -R g+rw .
+  $ cd /var/local/MY-EEA-PORTAL
+  $ git clone https://github.com/eea/eea.plonebuildout.MY-EEA-PORTAL.git
+  $ cd eea.plonebuildout.MY-EEA-PORTAL
+  $ ./install.sh deployment.cfg
+  $ ./bin/buildout -c deployment.cfg
+  $ chmod -R g+rw .
 
 The above installation process will install and configure, in addition to Zope and ZEO, the following:
 
@@ -225,6 +237,11 @@ The above installation process will install and configure, in addition to Zope a
 * Daemon for sending *emails*
 * *ZEO clients* - 9 instances
 * *ZEO server*
+
+.. note ::
+
+  See **RelStorage + PostgreSQL** section bellow if you want to use PostgreSQL instead of ZEO.
+
 
 Processes on production should be started with sudo, e.g::
 
@@ -253,16 +270,16 @@ use the Software Collection python 2.7 if there is no system python 2.7 without 
 For the application stack to be restarted when server reboot, the system administrator should
 add under /etc/init.d the script from eea.plonebuildout.MY-EEA-PORTAL/etc/rc.d/restart-portal, e.g.::
 
-$ cd eea.plonebuildout.MY-EEA-PORTAL/etc/rc.d
-$ ln -s `pwd`/restart-portal /etc/init.d/restart-portal
-$ chkconfig --add restart-portal
-$ chkconfig restart-portal on
-$ service restart-portal start
+  $ cd eea.plonebuildout.MY-EEA-PORTAL/etc/rc.d
+  $ ln -s `pwd`/restart-portal /etc/init.d/restart-portal
+  $ chkconfig --add restart-portal
+  $ chkconfig restart-portal on
+  $ service restart-portal start
 
 Apache configuration file should be symlinked from /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf
 under /etc/httpd/conf.d, this operation should be done by system administrators, e.g.::
 
-$ ln -s /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf /etc/httpd/conf.d/MY-EEA-PORTAL-apache-vh.conf
+  $ ln -s /eea.plonebuildout.MY-EEA-PORTAL/etc/apache-vh.conf /etc/httpd/conf.d/MY-EEA-PORTAL-apache-vh.conf
 
 User permissions
 ~~~~~~~~~~~~~~~~
@@ -309,8 +326,8 @@ logs on disk under /eea.plonebuildout.MY-EEA-PORTAL/var/log/, e.g.:
 Logs generated by Pound will be created under /eea.plonebuildout.MY-EEA-PORTAL/var/log/pound.log. This logs
 must be rotated using logrotate. System administrators should configure logrotate for example like this::
 
-    # rotate Pound logs for MY-EEA-PORTAL
-    /var/eea.plonebuildout.MY-EEA-PORTAL/var/log/pound.log {
+  # rotate Pound logs for MY-EEA-PORTAL
+  /var/eea.plonebuildout.MY-EEA-PORTAL/var/log/pound.log {
     weekly
     missingok
     rotate 5
@@ -321,22 +338,22 @@ must be rotated using logrotate. System administrators should configure logrotat
       /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
       /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
     endscript
-    }
+  }
 
 Logs generated by Apache will be created under /var/log/httpd/\*.log. This logs must be rotated using logrotate.
 Logrotate comes with suitable default configurations for apache/httpd. However, for extra log locations, such as
 specific access logs kept under /var/local/www-logs, system administrators should provide additional configuration file(s)
 for logrotate; for example, in /etc/logrotate.d/eea we might have something like this::
 
-    # rotate Apache logs for MY-EEA-PORTAL and MY-OTHER-EEA-PORTAL
-    /var/local/www-logs/MY-EEA-PORTAL/*.access /var/local/www-logs/MY-OTHER-EEA-PORTAL/access {
+  # rotate Apache logs for MY-EEA-PORTAL and MY-OTHER-EEA-PORTAL
+  /var/local/www-logs/MY-EEA-PORTAL/*.access /var/local/www-logs/MY-OTHER-EEA-PORTAL/access {
     missingok
     notifempty
     sharedscripts
     postrotate
         /sbin/service httpd reload > /dev/null 2>/dev/null || true
     endscript
-    }
+  }
 
 Logs via Graylog2
 ~~~~~~~~~~~~~~~~~
@@ -344,20 +361,20 @@ For Zope logs to rich Graylog2, rsyslog should be installed and configured under
 under an existing backend (e.g. redsquirrel). Zope clients should send the logs to rsyslog on certain interfaces and
 should be configured like bellow::
 
-    event-log-custom =
-        <syslog>
-            address /dev/log
-            facility local4
-            format ${:_buildout_section_name_}: %(message)s
-            level info
-        </syslog>
+  event-log-custom =
+    <syslog>
+      address /dev/log
+      facility local4
+      format ${:_buildout_section_name_}: %(message)s
+      level info
+    </syslog>
     access-log-custom =
-        <syslog>
-            address /dev/log
-            facility local1
-            format ${:_buildout_section_name_}-Z2: %(message)s
-            level info
-        </syslog>
+      <syslog>
+        address /dev/log
+        facility local1
+        format ${:_buildout_section_name_}-Z2: %(message)s
+        level info
+      </syslog>
 
 In order to have access on `EEA Graylog2`_, an administrator should be asked to give you permissions.
 
@@ -393,6 +410,22 @@ The guideline document provide detailed informations about:
 - backup procedures
 
 Example of deployment guidelines applied to a deployed buildout: `land.copernicus.plonebuildout`_
+
+
+RelStorage + PostgreSQL
+=======================
+By default this buildout is configured to run ZEO as a DB server. If you want to use
+PostgreSQL instead of ZEO first thing you will need to do is to configure it, outside this buildout.
+Or, you can use our `Ready-to-use Docker image`_ specially created for this purpose.
+
+Then, to enable it, just **uncomment** these lines within **development.cfg / deployment.cfg** and **re-run buildout**::
+
+  [dbclient-setup]
+  <= relstorage-client
+
+If you already have a running server on ZEO and you want to migrate to PostgreSQL see
+our `HowTos for PostgreSQL and RelStorage`_ wiki page.
+
 
 How to setup the Plone site
 ===========================
@@ -561,3 +594,5 @@ More details under `License.txt`_.
 .. _`EEA Common Plone Buildout - build on Jenkins`: http://ci.eionet.europa.eu/view/Plone%20EEA%20Buildouts/job/eea.plonebuildout.CPB
 .. _`EEA Common Plone Buildout Example - Jenkins CFG`: https://github.com/eea/eea.plonebuildout.example/blob/master/jenkins.cfg
 .. _`https://www.softwarecollections.org/en/`: https://www.softwarecollections.org/en/
+.. _`Ready-to-use Docker image`: https://github.com/eea/eea.docker.postgres
+.. _`HowTos for PostgreSQL and RelStorage`: https://taskman.eionet.europa.eu/projects/zope/wiki/HowToPostgreSQL#How-do-I-migrate-existing-Datafs-to-PostgreSQL
