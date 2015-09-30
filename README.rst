@@ -2,7 +2,7 @@
 EEA Common Plone Buildout (EEA-CPB)
 ===================================
 
-Also available as a `Docker`_ image `eeacms/plone-eea-common`_
+Also available as a `Docker`_ image. See `eeacms/plone-eea-common`_
 
 .. contents::
 
