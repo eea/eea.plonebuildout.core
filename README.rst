@@ -2,7 +2,7 @@
 EEA Common Plone Buildout (EEA-CPB)
 ===================================
 
-Also available as a `Docker`_ image. See `eeacms/plone-eea-common`_
+Also available as a `Docker`_ image. See `eeacms/kgs`_
 
 .. contents::
 
@@ -124,7 +124,7 @@ How to use EEA-CPB
 .. warning ::
 
     The steps bellow are DEPRECATED and the NEW WAY of deploying **EEA-CPB** is via
-    `Docker`_ using our dedicated Docker image `eeacms/plone-eea-common`_
+    `Docker`_ using our dedicated Docker image `eeacms/kgs`_
 
 
 This section will describe the necessarily steps to create a new EEA Plone based buildout. It will document
@@ -606,4 +606,4 @@ More details under `License.txt`_.
 .. _`Ready-to-use Docker image`: https://github.com/eea/eea.docker.postgres
 .. _`HowTos for PostgreSQL and RelStorage`: https://taskman.eionet.europa.eu/projects/zope/wiki/HowToPostgreSQL#How-do-I-migrate-existing-Datafs-to-PostgreSQL
 .. _`Docker`: https://www.docker.com/
-.. _`eeacms/plone-eea-common`: https://github.com/eea/eea.docker.plone-eea-common
+.. _`eeacms/kgs`: https://github.com/eea/eea.docker.kgs
