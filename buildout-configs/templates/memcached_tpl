@@ -4,7 +4,7 @@
  PIDFILE=${buildout:directory}/var/memcached.pid.${configuration:memcache-port}
     case "$1" in
       start)
-       ${memcached:location}/bin/memcached -d -u ${configuration:effective-user} -P $PIDFILE -m ${configuration:memcache-size}
+       ${memcached:location}/bin/memcached -d -u ${configuration:effective-user} -P $PIDFILE -m ${configuration:memcache-size} -p ${configuration:memcache-port}
         ;;
       stop)
         kill `cat $PIDFILE`
