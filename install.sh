@@ -64,7 +64,7 @@ else
 
   echo "Installing virtualenv"
   # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
-  curl -o "setuptools-$SETUPTOOLS.tar.gz" -k "https://pypi.python.org/packages/source/s/setuptools/setuptools-$SETUPTOOLS.tar.gz"
+  curl -o "setuptools-$SETUPTOOLS.zip" -k "https://pypi.org/packages/source/s/setuptools/setuptools-$SETUPTOOLS.zip"
   curl -o "/tmp/virtualenv.py" -k "https://raw.githubusercontent.com/eea/virtualenv/1.10.X/virtualenv.py"
   # BBB update virtualenv
   #curl -o "/tmp/virtualenv.py" -k "https://raw.githubusercontent.com/pypa/virtualenv/13.1.0/virtualenv.py"
@@ -72,7 +72,7 @@ else
   echo "Running: $PYTHON /tmp/virtualenv.py --clear ."
   $PYTHON "/tmp/virtualenv.py" --clear .
   rm /tmp/virtualenv.py*
-  rm "setuptools-$SETUPTOOLS.tar.gz"
+  rm "setuptools-$SETUPTOOLS.zip"
 
 fi
 
