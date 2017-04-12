@@ -20,14 +20,14 @@ echo "Using $CONFIG"
 echo ""
 
 if [ -z "$SETUPTOOLS" ]; then
-  SETUPTOOLS="20.2.2"
+  SETUPTOOLS="33.1.1"
 fi
 
 echo "Using setuptools $SETUPTOOLS"
 echo ""
 
 if [ -z "$ZCBUILDOUT" ]; then
-  ZCBUILDOUT="2.5.1"
+  ZCBUILDOUT="2.9.3"
 fi
 
 echo "Using zc.buildout $ZCBUILDOUT"
