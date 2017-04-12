@@ -110,6 +110,9 @@ libcurl3-dev                curl-devel                   sparql-client and pycur
 libmemcached                libmemcached                 memcached
 libmemcached-dev>=0.40      libmemcached-devel>=0.40     memcached
 zlib1g-dev                  zlib-devel                   memcached
+libblas-dev                 blas-devel                   eea.similarity
+liblapack                   lapack-devel                 eea.similarity
+gfortran                    gcc-fortran                  eea.similarity
 ==========================  ===========================  =========================================
 
 Additional info to install git for CentOS::
