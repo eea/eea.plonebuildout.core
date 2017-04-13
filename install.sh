@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
-#set -x
 
 CONFIG=$1
-SETUPTOOLS=`curl -s https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g'`
-ZCBUILDOUT=`curl -s https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g'`
-BOOSTRAP='https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/bootstrap.py'
+
+GET_PIP="https://bootstrap.pypa.io/get-pip.py"
+VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg"
+
+PIP=$(curl -sL $VERSION_CFG | grep "pip\s*=\s*" | sed 's/^.*\=\s*//g')
+SETUPTOOLS=$(curl -SL $VERSION_CFG | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
+ZCBUILDOUT=$(curl -SL $VERSION_CFG | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
 
 if [ -z "$CONFIG" ]; then
   if [ -s "development.cfg" ]; then
@@ -17,6 +20,13 @@ fi
 
 echo ""
 echo "Using $CONFIG"
+echo ""
+
+if [ -z "$PIP" ]; then
+  PIP="9.0.1"
+fi
+
+echo "Using pip $PIP"
 echo ""
 
 if [ -z "$SETUPTOOLS" ]; then
@@ -42,46 +52,41 @@ PYTHON_OK=`$PYTHON -c 'import sys
 print (sys.version_info >= (2, 7) and "1" or "0")'`
 
 if [ "$PYTHON_OK" = '0' ]; then
-    echo "Python 2.7 or later is required"
-    echo "EXAMPLE: PYTHON=/path/to/python2.7 ./install.sh"
+    echo "ERROR: Python 2.7 or later is required"
+    echo "       EXAMPLE USAGE: PYTHON=/path/to/python2.7 ./install.sh"
     exit 0
 fi
 
-echo "Using Python: "
-echo `$PYTHON --version`
+echo "Using Python: $($PYTHON --version)"
 
 echo "Adding eggs directory"
-mkdir -p eggs
+mkdir -vp eggs
+
+if [ ! -s "get-pip.py" ]; then
+  curl -o "get-pip.py" -SL $GET_PIP
+fi
 
 if [ -s "bin/activate" ]; then
 
   echo ""
-  echo "Already a virtualenv environment."
-  echo "Please remove bin/activate if you want to reinitiate it."
+  echo "WARNING: Already a virtualenv environment."
+  echo "WARNING: Please remove bin/activate if you want to reinitiate it."
   echo ""
 
 else
 
   echo "Installing virtualenv"
   # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
-  curl -o "setuptools-$SETUPTOOLS.zip" -SL "https://pypi.org/packages/source/s/setuptools/setuptools-$SETUPTOOLS.zip"
-  curl -o "/tmp/virtualenv.py" -SL "https://raw.githubusercontent.com/eea/virtualenv/1.10.X/virtualenv.py"
-  # BBB update virtualenv
-  #curl -o "/tmp/virtualenv.py" -SL "https://raw.githubusercontent.com/pypa/virtualenv/13.1.0/virtualenv.py"
+  curl -o "/tmp/virtualenv.py" -SL "https://raw.githubusercontent.com/pypa/virtualenv/15.1.0/virtualenv.py"
 
-  echo "Running: $PYTHON /tmp/virtualenv.py --clear ."
-  $PYTHON "/tmp/virtualenv.py" --clear .
-  rm /tmp/virtualenv.py*
-  rm "setuptools-$SETUPTOOLS.zip"
+  echo "Running: $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel ."
+  $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
+  rm -v /tmp/virtualenv.py*
+
+  echo "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT"
+  ./bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT
 
 fi
-
-if [ ! -s "bootstrap.py" ]; then
-  curl -o "bootstrap.py" -SL $BOOSTRAP
-fi
-
-echo "Running bin/python bootstrap.py -c $CONFIG -v $ZCBUILDOUT --setuptools-version=$SETUPTOOLS"
-bin/python "bootstrap.py" -c $CONFIG -v $ZCBUILDOUT --setuptools-version=$SETUPTOOLS
 
 echo "Disabling the SSL CERTIFICATION for git"
 git config --global http.sslVerify false
