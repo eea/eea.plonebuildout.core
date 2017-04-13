@@ -6,9 +6,9 @@ CONFIG=$1
 GET_PIP="https://bootstrap.pypa.io/get-pip.py"
 VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg"
 
-PIP=$(curl -sL $VERSION_CFG | grep "pip\s*=\s*" | sed 's/^.*\=\s*//g')
-SETUPTOOLS=$(curl -SL $VERSION_CFG | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
-ZCBUILDOUT=$(curl -SL $VERSION_CFG | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
+PIP=$(curl -sSL $VERSION_CFG | grep "pip\s*=\s*" | sed 's/^.*\=\s*//g')
+SETUPTOOLS=$(curl -sSL $VERSION_CFG | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
+ZCBUILDOUT=$(curl -sSL $VERSION_CFG | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
 
 if [ -z "$CONFIG" ]; then
   if [ -s "development.cfg" ]; then
@@ -63,7 +63,7 @@ echo "Adding eggs directory"
 mkdir -vp eggs
 
 if [ ! -s "get-pip.py" ]; then
-  curl -o "get-pip.py" -SL $GET_PIP
+  curl -o "get-pip.py" -sSL $GET_PIP
 fi
 
 if [ -s "bin/activate" ]; then
@@ -77,7 +77,7 @@ else
 
   echo "Installing virtualenv"
   # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
-  curl -o "/tmp/virtualenv.py" -SL "https://raw.githubusercontent.com/pypa/virtualenv/15.1.0/virtualenv.py"
+  curl -o "/tmp/virtualenv.py" -sSL "https://raw.githubusercontent.com/pypa/virtualenv/15.1.0/virtualenv.py"
 
   echo "Running: $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel ."
   $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
