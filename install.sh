@@ -1,6 +1,21 @@
 #!/bin/bash
 set -e
 
+red="\e[1;31m"
+green="\e[1;32m"
+blink="\e[1;31m"
+NC="\e[0m" # No Color
+
+function info {
+  echo -e "${green}INFO: ${NC} $1"
+}
+function warn {
+  echo -e "${blink}WARN: ${NC} $1"
+}
+function error {
+  echo -e "${red}ERROR: ${NC} $1"
+}
+
 CONFIG=$1
 
 GET_PIP="https://bootstrap.pypa.io/get-pip.py"
@@ -18,30 +33,26 @@ if [ -z "$CONFIG" ]; then
   fi
 fi
 
-echo ""
-echo "Using $CONFIG"
-echo ""
+#echo -e "${green}"
+info "Using $CONFIG"
 
 if [ -z "$PIP" ]; then
   PIP="9.0.1"
 fi
 
-echo "Using pip $PIP"
-echo ""
+info "Using pip $PIP$"
 
 if [ -z "$SETUPTOOLS" ]; then
   SETUPTOOLS="33.1.1"
 fi
 
-echo "Using setuptools $SETUPTOOLS"
-echo ""
+info "Using setuptools $SETUPTOOLS"
 
 if [ -z "$ZCBUILDOUT" ]; then
   ZCBUILDOUT="2.9.3"
 fi
 
-echo "Using zc.buildout $ZCBUILDOUT"
-echo ""
+info "Using zc.buildout $ZCBUILDOUT"
 
 if [ -z "$PYTHON" ]; then
   PYTHON="/usr/bin/env python2.7"
@@ -52,14 +63,15 @@ PYTHON_OK=`$PYTHON -c 'import sys
 print (sys.version_info >= (2, 7) and "1" or "0")'`
 
 if [ "$PYTHON_OK" = '0' ]; then
-    echo "ERROR: Python 2.7 or later is required"
-    echo "       EXAMPLE USAGE: PYTHON=/path/to/python2.7 ./install.sh"
+    error "Python 2.7 or later is required"
+    error "EXAMPLE USAGE: PYTHON=/path/to/python2.7 ./install.sh"
     exit 0
 fi
 
-echo "Using Python: $($PYTHON --version)"
+info "Using Python: "
+$($PYTHON --version)
 
-echo "Adding eggs directory"
+info "Adding eggs directory"
 mkdir -vp eggs
 
 if [ ! -s "get-pip.py" ]; then
@@ -68,31 +80,26 @@ fi
 
 if [ -s "bin/activate" ]; then
 
-  echo ""
-  echo "WARNING: Already a virtualenv environment."
-  echo "WARNING: Please remove bin/activate if you want to reinitiate it."
-  echo ""
+  warn "Already a virtualenv environment."
+  warn "Please remove bin/activate if you want to reinitiate it."
 
 else
 
-  echo "Installing virtualenv"
+  info "Installing virtualenv"
   # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
   curl -o "/tmp/virtualenv.py" -sSL "https://raw.githubusercontent.com/pypa/virtualenv/15.1.0/virtualenv.py"
 
-  echo "Running: $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel ."
+  info "Running: $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel ."
   $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
   rm -v /tmp/virtualenv.py*
 
-  echo "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT"
+  info "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT"
   ./bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT
 
 fi
 
-echo "Disabling the SSL CERTIFICATION for git"
-git config --global http.sslVerify false
-
 echo ""
 echo "========================================================================="
-echo "All set. Now you can run ./bin/buildout -c $CONFIG"
+info "All set. Now you can run ./bin/buildout -c $CONFIG"
 echo "========================================================================="
 echo ""

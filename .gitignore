@@ -5,7 +5,9 @@
 .installed.cfg
 .mr.developer.cfg
 .current_revision
+pip-selfcheck.json
 updates.sh.tmp
+get-pip.py
 bin
 eggs
 include
