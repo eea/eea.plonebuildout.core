@@ -4,9 +4,10 @@ services:
     image: eeacms/www-devel
     volumes:
     - ./versions.cfg:/plone/instance/versions.cfg
-    - ~/.gitconfig:/root/.gitconfig:ro
-    - ~/.pypirc:/root/.pypirc:ro
-    - ~/.mkrelease:/root/.mkrelease:ro
+    - ./.gitconfig:/root/.gitconfig:ro
+    - ./.pypirc:/root/.pypirc:ro
+    - ./.mkrelease:/root/.mkrelease:ro
+    - ./.ssh:/root/.ssh
     stdin_open: true
     tty: true
     command:

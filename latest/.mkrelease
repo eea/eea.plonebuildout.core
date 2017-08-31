@@ -1,0 +1,8 @@
+[defaults]
+distbase =
+distdefault = eea
+
+[aliases]
+world =
+  pypi
+  eea

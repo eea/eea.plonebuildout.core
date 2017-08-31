@@ -1,0 +1,13 @@
+[distutils]
+index-servers =
+   pypi
+   eea
+
+[pypi]
+username: eea
+password: secret
+
+[eea]
+repository: http://eggrepo.apps.eea.europa.eu/
+username: ldapuser
+password: secret
