@@ -1,0 +1,13 @@
+version: "2"
+services:
+  devel:
+    image: eeacms/www-devel
+    volumes:
+    - ./versions.cfg:/plone/instance/versions.cfg
+    - ~/.gitconfig:/root/.gitconfig:ro
+    - ~/.pypirc:/root/.pypirc:ro
+    - ~/.mkrelease:/root/.mkrelease:ro
+    stdin_open: true
+    tty: true
+    command:
+    - "./debug.sh"

@@ -7,8 +7,7 @@ import subprocess
 import urllib
 
 
-vfile_path = "https://svn.eionet.europa.eu/repositories/Zope/"\
-             "trunk/www.eea.europa.eu/trunk/versions.cfg"
+vfile_path = "latest/versions.cfg"
 kgs_uri = "buildout-configs/kgs"
 
 
@@ -18,19 +17,19 @@ def _increment_version(version):
     """
 
     last = True #flag for last digit, we treat it differently
-    bump = False 
+    bump = False
     out = []
     length = len(version)
-    i = 0   
+    i = 0
     for n in reversed(version):
         n = n + int(last) + int(bump)
         i += 1
         if n >= 10 and not (i == length):
-            n = 0   
+            n = 0
             bump = True
-        else:   
-            bump = False 
-        last = False 
+        else:
+            bump = False
+        last = False
         out.append(n)
 
     return tuple(reversed(out))
@@ -66,8 +65,9 @@ def main():
     os.mkdir(next_ver)
     new_kgs = os.path.join(kgs_path, next_ver)
     with open(os.path.join(new_kgs, 'versions.cfg'), 'wb') as vfile:
-        fp = urllib.urlopen(vfile_path)
-        vfile.write(fp.read())
+        latest_path = os.path.join(cwd, vfile_path)
+        with open(latest_path, 'r') as latest_version:
+            vfile.write(latest_version.read())
 
     #run zope_kgs_copy.py in buildout-configs/kgs/<x.x>/
     cmd = ['../zope_kgs_copy.py']
