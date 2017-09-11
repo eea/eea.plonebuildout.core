@@ -11,4 +11,4 @@ services:
     stdin_open: true
     tty: true
     command:
-    - "./debug.sh"
+    - "/debug.sh"
