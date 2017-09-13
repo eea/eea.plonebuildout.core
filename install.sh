@@ -19,11 +19,12 @@ function error {
 CONFIG=$1
 
 GET_PIP="https://bootstrap.pypa.io/get-pip.py"
-VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/versions.cfg"
+VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/latest/versions.cfg"
 
-PIP=$(curl -sSL $VERSION_CFG | grep "pip\s*=\s*" | sed 's/^.*\=\s*//g')
-SETUPTOOLS=$(curl -sSL $VERSION_CFG | grep "setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
-ZCBUILDOUT=$(curl -sSL $VERSION_CFG | grep "zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
+PIP=$(curl -sSL $VERSION_CFG | grep "^pip\s*=\s*" | sed 's/^.*\=\s*//g')
+SETUPTOOLS=$(curl -sSL $VERSION_CFG | grep "^setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
+ZCBUILDOUT=$(curl -sSL $VERSION_CFG | grep "^zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
+WHEEL=$(curl -sSL $VERSION_CFG | grep "^wheel\s*=\s*" | sed 's/^.*\=\s*//g')
 
 if [ -z "$CONFIG" ]; then
   if [ -s "development.cfg" ]; then
@@ -40,7 +41,7 @@ if [ -z "$PIP" ]; then
   PIP="9.0.1"
 fi
 
-info "Using pip $PIP$"
+info "Using pip $PIP"
 
 if [ -z "$SETUPTOOLS" ]; then
   SETUPTOOLS="33.1.1"
@@ -53,6 +54,12 @@ if [ -z "$ZCBUILDOUT" ]; then
 fi
 
 info "Using zc.buildout $ZCBUILDOUT"
+
+if [ -z "$WHEEL" ]; then
+  WHEEL="0.29.0"
+fi
+
+info "Using wheel $WHEEL"
 
 if [ -z "$PYTHON" ]; then
   PYTHON="/usr/bin/env python2.7"
@@ -81,7 +88,7 @@ fi
 if [ -s "bin/activate" ]; then
 
   warn "Already a virtualenv environment."
-  warn "Please remove bin/activate if you want to reinitiate it."
+  warn "Please remove bin/activate if you want to reinitialize it."
 
 else
 
@@ -93,8 +100,8 @@ else
   $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
   rm -v /tmp/virtualenv.py*
 
-  info "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT"
-  ./bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT
+  info "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL"
+  ./bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL
 
 fi
 
