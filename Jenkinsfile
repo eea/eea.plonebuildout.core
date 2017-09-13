@@ -36,7 +36,7 @@ rm -rf eea.plonebuildout.example
 
     stage('WWW') {
       steps {
-        build '../eea.docker.www/master'
+        build '../eea.docker.plone-eea-www/master'
       }
     }
 
