@@ -7,8 +7,8 @@ pipeline {
           sh '''git clone https://github.com/eea/eea.plonebuildout.example.git
 cd eea.plonebuildout.example
 ./install.sh
-./bin/buildout -c jenkins.cfg
-./bin/test -v -vv -s eea.plonebuildout.profile
+bin/python bin/buildout -c jenkins.cfg
+bin/python bin/test -v -vv -s eea.plonebuildout.profile
 ./bin/uptest
 cd ../
 rm -rf eea.plonebuildout.example'''
