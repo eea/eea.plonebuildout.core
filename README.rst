@@ -1,6 +1,8 @@
 ===================================
 EEA Common Plone Buildout (EEA-CPB)
 ===================================
+.. image:: http://ci.eionet.europa.eu/job/eea/job/eea.plonebuildout.core/job/master/badge/icon
+  :target: http://ci.eionet.europa.eu/job/eea/job/eea.plonebuildout.core/job/master/display/redirect
 
 Also available as a `Docker`_ image. See `eeacms/kgs`_
 
