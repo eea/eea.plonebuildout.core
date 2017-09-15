@@ -40,6 +40,38 @@ rm -rf eea.plonebuildout.example
       }
     }
 
+    stage('Release') {
+      steps {
+        parallel(
+
+          "EEA Release candidates": {
+            node(label: 'docker-1.13') {
+              script {
+                try {
+                  sh '''docker run -i --net=host --name="$BUILD_TAG-eea" eeacms/www-devel /debug.sh bin/print_unreleased_packages src'''
+                } finally {
+                  sh '''docker rm -v $BUILD_TAG-eea'''
+                }
+              }
+            }
+          },
+
+          "PyPI Release candidates": {
+            node(label: 'docker-1.13') {
+              script {
+                try {
+                  sh '''docker run -i --net=host --name="$BUILD_TAG-pypi" eeacms/www-devel /debug.sh bin/print_pypi_plone_unreleased_eggs'''
+                } finally {
+                  sh '''docker rm -v $BUILD_TAG-pypi'''
+                }
+              }
+            }
+          }
+
+        )
+      }
+    }
+
   }
 
   post {
