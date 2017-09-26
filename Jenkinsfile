@@ -49,6 +49,8 @@ rm -rf eea.plonebuildout.example
               script {
                 try {
                   sh '''docker run -i --net=host --name="$BUILD_TAG-eea" eeacms/www-devel /debug.sh bin/print_unreleased_packages src'''
+                } catch (err) {
+                  echo "Unstable: ${err}"
                 } finally {
                   sh '''docker rm -v $BUILD_TAG-eea'''
                 }
@@ -61,6 +63,8 @@ rm -rf eea.plonebuildout.example
               script {
                 try {
                   sh '''docker run -i --net=host --name="$BUILD_TAG-pypi" eeacms/www-devel /debug.sh bin/print_pypi_plone_unreleased_eggs'''
+                } catch (err) {
+                  echo "Unstable: ${err}"
                 } finally {
                   sh '''docker rm -v $BUILD_TAG-pypi'''
                 }
