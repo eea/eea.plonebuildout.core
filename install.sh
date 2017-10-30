@@ -50,7 +50,7 @@ fi
 info "Using setuptools $SETUPTOOLS"
 
 if [ -z "$ZCBUILDOUT" ]; then
-  ZCBUILDOUT="2.9.3"
+  ZCBUILDOUT="2.9.5"
 fi
 
 info "Using zc.buildout $ZCBUILDOUT"
