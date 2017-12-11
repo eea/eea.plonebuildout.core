@@ -46,12 +46,14 @@ class Github(object):
     """
     def __init__(self,
         github="https://api.github.com/orgs/eea/repos?per_page=100&page=%s",
+        sources="http://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/",
         timeout=15,
         loglevel=logging.INFO,
         logpath='.',
         exclude=None):
 
         self.github = github
+        self.sources = sources
         self.timeout = timeout
         self.status = 0
         self.repos = []
@@ -170,22 +172,20 @@ class Github(object):
                          count, (end - start).seconds)
 
     def start(self):
-        """ Start syncing
-        """
-        self.repos = []
-        links = [self.github % count for count in range(1,100)]
-        try:
-            for link in links:
-                with contextlib.closing(urllib2.urlopen(
-                        self.request(link), timeout=self.timeout)) as conn:
-                    repos = json.loads(conn.read())
-                    if not repos:
-                        break
-                    self.logger.info('Adding repositories from %s',  link)
-                    self.repos.extend(repos)
-            self.check_repos()
-        except Exception, err:
-            self.logger.exception(err)
+       """ Start syncing
+       """
+       self.repos = []
+       with contextlib.closing(urllib2.urlopen(self.sources, timeout=self.timeout)) as conn:
+           for line in conn:
+               if '=' not in line:
+                   continue
+               repo_name, _url = line.split('=', 1)
+               repo_name = repo_name.strip()
+               self.repos.append({
+                   'full_name': "eea/{name}".format(name=repo_name),
+                   'url': 'https://api.github.com/repos/eea/{name}'.format(name=repo_name),
+                })
+       self.check_repos()
 
     __call__ = start
 
