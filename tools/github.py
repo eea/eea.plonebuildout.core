@@ -46,7 +46,7 @@ class Github(object):
     """
     def __init__(self,
         github="https://api.github.com/orgs/eea/repos?per_page=100&page=%s",
-        sources="http://svn.eionet.europa.eu/repositories/Zope/trunk/www.eea.europa.eu/trunk/",
+        sources="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/buildout-configs/sources.cfg",
         timeout=15,
         loglevel=logging.INFO,
         logpath='.',

@@ -46,9 +46,7 @@ rm -rf eea.plonebuildout.example
 
           "EEA Pull Requests": {
             node(label: 'eea') {
-                sh '''mkdir -p logs'''
-                sh '''wget -O github.py https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/tools/github.py'''
-                sh '''python github.py warn logs'''
+              sh '''curl https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/tools/github.py | python'''
             }
           },
 
