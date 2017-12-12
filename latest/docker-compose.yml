@@ -10,5 +10,7 @@ services:
     - ./.ssh:/root/.ssh
     stdin_open: true
     tty: true
+    environment:
+      GIT_BRANCH: "master"
     command:
     - "/debug.sh"
