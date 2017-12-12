@@ -46,8 +46,16 @@ rm -rf eea.plonebuildout.example
 
           "EEA Pull Requests": {
             node(label: 'eea') {
-                sh '''wget -O github.py https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/tools/github.py'''
-                sh '''python github.py warn'''
+              script {
+                try {
+                  sh '''wget -O github.py https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/tools/github.py'''
+                  sh '''python github.py warn'''
+                } catch (err) {
+                  echo "Unstable: ${err}"
+                } finally {
+                  sh '''rm github*'''
+                }
+              }
             }
           },
 
