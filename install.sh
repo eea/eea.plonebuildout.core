@@ -18,7 +18,6 @@ function error {
 
 CONFIG=$1
 
-GET_PIP="https://bootstrap.pypa.io/get-pip.py"
 VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/latest/versions.cfg"
 
 PIP=$(curl -sSL $VERSION_CFG | grep "^pip\s*=\s*" | sed 's/^.*\=\s*//g')
@@ -81,10 +80,6 @@ $($PYTHON --version)
 info "Adding eggs directory"
 mkdir -vp eggs
 
-if [ ! -s "get-pip.py" ]; then
-  curl -o "get-pip.py" -sSL $GET_PIP
-fi
-
 if [ -s "bin/activate" ]; then
 
   warn "Already a virtualenv environment."
@@ -100,8 +95,8 @@ else
   $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
   rm -v /tmp/virtualenv.py*
 
-  info "Running: bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL"
-  ./bin/python get-pip.py pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL
+  info "Running: bin/pip install pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL"
+  ./bin/pip install pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL
 
 fi
 
