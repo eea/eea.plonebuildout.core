@@ -77,6 +77,13 @@ fi
 info "Using Python: "
 $($PYTHON --version)
 
+if [ -z "$VIRTUALENV" ];; then
+    VIRTUALENV="/usr/bin/env virtualenv2"
+fi
+
+info "Using virtualenv $VIRTUALENV"
+
+
 info "Adding eggs directory"
 mkdir -vp eggs
 
@@ -87,13 +94,8 @@ if [ -s "bin/activate" ]; then
 
 else
 
-  info "Installing virtualenv"
-  # NOTE: virtualenv now doesn't download anything by default, so we need to provide setuptools
-  curl -o "/tmp/virtualenv.py" -sSL "https://raw.githubusercontent.com/pypa/virtualenv/15.1.0/virtualenv.py"
-
-  info "Running: $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel ."
-  $PYTHON /tmp/virtualenv.py --clear --no-setuptools --no-pip --no-wheel .
-  rm -v /tmp/virtualenv.py*
+  info "Running: $VIRTUALENV --clear ."
+  $VIRTUALENV --clear .
 
   info "Running: bin/pip install pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL"
   ./bin/pip install pip==$PIP setuptools==$SETUPTOOLS zc.buildout==$ZCBUILDOUT wheel==$WHEEL
