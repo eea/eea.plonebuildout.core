@@ -77,7 +77,7 @@ fi
 info "Using Python: "
 $($PYTHON --version)
 
-if [ -z "$VIRTUALENV" ];; then
+if [ -z "$VIRTUALENV" ]; then
     VIRTUALENV="/usr/bin/env virtualenv2"
 fi
 
