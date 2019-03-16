@@ -20,10 +20,10 @@ CONFIG=$1
 
 VERSION_CFG="https://raw.githubusercontent.com/eea/eea.plonebuildout.core/master/latest/versions.cfg"
 
-PIP=$(curl -sSL $VERSION_CFG | grep "^pip\s*=\s*" | sed 's/^.*\=\s*//g')
+PIP=$(curl -sSL $VERSION_CFG | grep "^pip\s*=\s*" | sed 's/ *//g' | sed 's/^.*\=\s*//g')
 SETUPTOOLS=$(curl -sSL $VERSION_CFG | grep "^setuptools\s*\=\s*" | sed 's/ *//g' | sed 's/=//g' | sed 's/[a-z]//g')
-ZCBUILDOUT=$(curl -sSL $VERSION_CFG | grep "^zc\.buildout\s*=\s*" | sed 's/^.*\=\s*//g')
-WHEEL=$(curl -sSL $VERSION_CFG | grep "^wheel\s*=\s*" | sed 's/^.*\=\s*//g')
+ZCBUILDOUT=$(curl -sSL $VERSION_CFG | grep "^zc\.buildout\s*=\s*" | sed 's/ *//g' | sed 's/^.*\=\s*//g')
+WHEEL=$(curl -sSL $VERSION_CFG | grep "^wheel\s*=\s*" | sed 's/ *//g' | sed 's/^.*\=\s*//g')
 
 if [ -z "$CONFIG" ]; then
   if [ -s "development.cfg" ]; then
